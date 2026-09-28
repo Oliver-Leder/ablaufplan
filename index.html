@@ -48,6 +48,8 @@ h1{font-weight:500;font-size:30px;margin:0}
 .btn.danger{color:var(--err);border-color:#ecc6cb}
 .btn.danger.armed{background:var(--err);color:#fff;border-color:var(--err)}
 .spacer{flex:1}
+.sync{font-family:var(--sans);font-size:12.5px;color:var(--muted);white-space:nowrap}
+.sync.ok{color:var(--ok)} .sync.err{color:var(--err)}
 .status{font-family:var(--sans);font-size:13px;border:0;border-radius:6px;padding:6px 11px;cursor:pointer}
 .status.ok{background:var(--ok-bg);color:var(--ok)} .status.warn{background:var(--warn-bg);color:var(--warn)} .status.err{background:var(--err-bg);color:var(--err)}
 .menu{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--rule-2);border-radius:8px;box-shadow:0 12px 30px -14px rgba(0,0,0,.3);padding:4px;min-width:220px;font-family:var(--sans);font-size:14px}
@@ -158,15 +160,16 @@ footer{font-family:var(--sans);font-weight:300;font-size:12px;color:var(--muted)
     <button class="btn primary" id="addBtn">+ Neuer Punkt</button>
     <button class="btn" id="undoBtn" title="Rückgängig (⌘Z)">↶<span class="hide-sm"> Rückgängig</span></button>
     <span class="spacer"></span>
+    <span class="sync busy" id="sync">Lokal</span>
     <button class="status ok" id="statusBtn"></button>
     <button class="btn" id="menuBtn" title="Mehr">•••</button>
     <div class="menu" id="menu" hidden>
       <button data-menu="export">Als Datei sichern</button>
-      <button data-menu="import">Datei laden</button>
+      <button data-menu="import">Datei laden (ersetzt für alle)</button>
       <button data-menu="copy">Als Text kopieren</button>
       <button data-menu="print">Drucken</button>
       <hr>
-      <button data-menu="reset" class="danger">Alles auf Anfang zurücksetzen</button>
+      <button data-menu="reset" class="danger">Für alle auf Anfang zurücksetzen</button>
     </div>
     <input type="file" id="fileIn" accept="application/json,.json" hidden>
   </div>
@@ -183,13 +186,13 @@ footer{font-family:var(--sans);font-weight:300;font-size:12px;color:var(--muted)
   </div>
 </main>
 
-<footer class="wrap">Wird automatisch in diesem Browser gespeichert. Zum Teilen: ••• → „Als Datei sichern“, bei den anderen „Datei laden“.</footer>
+<footer class="wrap">Änderungen werden live für alle gespeichert, die diesen Link öffnen. Texte werden gespeichert, sobald du das Feld verlässt. Sicherheitskopie: ••• → „Als Datei sichern“.</footer>
 
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" aria-label="Programmpunkt bearbeiten"></aside>
 <div class="toast" id="toast"><span id="toastMsg"></span><button id="toastBtn">Rückgängig</button></div>
 
-<script>
+<script type="module">
 (() => {
 'use strict';
 const SEED = {"meta": {"title": "Hochzeit", "subtitle": "Ablauf fürs Planungsteam · 17.10.2026"}, "author": "", "items": [{"title": "Frühstück", "color": "butter", "fixed": true, "time": "07:00", "dur": 30, "tentative": true, "details": "Uhrzeit steht nicht auf dem Zettel – bitte festlegen.", "id": "p1"}, {"title": "Get Ready", "color": "sky", "fixed": true, "time": "07:30", "until": "next", "id": "p2"}, {"title": "First Look", "color": "rose", "fixed": true, "time": "11:45", "dur": 20, "tentative": true, "id": "p3"}, {"title": "Fotoshoot", "color": "rose", "until": "next", "details": "Paar-Shooting direkt nach dem First Look.", "id": "p4"}, {"title": "Einlauf der Braut", "color": "butter", "fixed": true, "time": "12:55", "dur": 5, "id": "p5"}, {"title": "Trauung", "color": "sage", "fixed": true, "time": "13:00", "until": "next", "location": "Kirche", "details": "Musik: nur Chor und Klavier, kein Orchester.\nOffen: Gäste informieren, dass sie ihr Zimmer in der Location erst später beziehen?", "id": "p6"}, {"title": "Kuchen", "color": "apricot", "fixed": true, "time": "14:00", "until": "next", "id": "p7"}, {"title": "Abfahrt Schloss", "color": "butter", "fixed": true, "time": "15:00", "dur": 30, "id": "p8"}, {"title": "Fotoshoot", "color": "rose", "fixed": true, "time": "16:00", "until": "next", "location": "Schloss", "id": "p9"}, {"title": "Chaoskarten verteilen", "color": "butter", "parallel": true, "until": "next", "details": "Während das Paar beim Shooting ist. Karten sind gekauft und individualisiert.", "id": "p10"}, {"title": "Empfang Schloss", "color": "sky", "fixed": true, "time": "16:30", "until": "next", "location": "Schloss", "details": "Rückkehr vom Shooting: Begrüßung und Jubel.\nOffen: Wie jubeln wir? Idee: Fanfare zur Anfahrt, Verlesen wie im Adel.\nHochprozentiges kommt vom Schloss.", "id": "p11"}, {"title": "Puzzlespiel zum Kennenlernen", "color": "sky", "parallel": true, "until": "next", "details": "Statt Fotobox: Alle bekommen ein Puzzleteil, suchen die passenden Personen und kommen ins Gespräch. Der Fotograf macht das Gruppenfoto.\nPuzzlestücke passend zur Gästezahl, Fotograf briefen.", "id": "p12"}, {"title": "Kleine Rede mit Vorstellung", "color": "apricot", "fixed": true, "time": "17:00", "dur": 20, "tentative": true, "id": "p13"}, {"title": "Gästebuch-Leinwand", "color": "sage", "parallel": true, "until": "end", "details": "Kreatives Gästebuch: große Leinwand, jede*r malt einen Strich in verschiedenen Grüntönen (für die nackten Wände). Braucht eine Staffelei.", "id": "p14"}, {"title": "Fotoaufgaben & Gäste-Collage", "color": "rose", "parallel": true, "until": "end", "details": "Fotoaufgaben liegen auf den Stühlen. Puzzle-Personen wiederfinden und fotografieren. Daraus entsteht die Gäste-Collage.", "id": "p15"}, {"title": "Ideen (offen): Tattoo-Station", "color": "stone", "parallel": true, "until": "end", "tentative": true, "details": "Tattoos mit Motiven vom Paar – schön und lustig (Köpfe, Familienwappen …). Kosten klären.", "id": "p16"}, {"title": "Ideen (offen): 10 Gläser", "color": "stone", "parallel": true, "until": "end", "tentative": true, "details": "Ein Glas pro Hochzeitstag bis zum 10. Zettel und Stifte daneben – Gäste schreiben Wünsche, Witze, Gedanken für das jeweilige Jahr.", "id": "p17"}, {"title": "Ideen (offen): Fotoecke mit Kinderbildern", "color": "stone", "parallel": true, "until": "end", "tentative": true, "details": "Anfrage beim Paar läuft, ob sie das wollen.", "id": "p18"}, {"title": "Flugbegleiter-Einführung", "color": "lavender", "fixed": true, "time": "18:45", "dur": 15, "tentative": true, "details": "Wenn alle sitzen, vor dem Essen.", "id": "p19"}, {"title": "Vorspeise", "color": "sage", "fixed": true, "time": "19:00", "dur": 40, "tentative": true, "details": "Kein Programm während des Essens – nur zwischen den Gängen.", "id": "p20"}, {"title": "Audio-Gästebuch (QR-Codes)", "color": "sky", "parallel": true, "until": "end", "details": "QR-Codes (Hochzeitsedition) auf den Tischen verteilt, zusammen mit Fotoaufgaben. Paket ist gebucht.", "id": "p21"}, {"title": "Spieltisch", "color": "butter", "parallel": true, "until": "end", "tentative": true, "details": "Steht auf dem Zettel bei den Parallel-Aktionen zum Dinner.", "id": "p22"}, {"title": "Sandmalerei", "color": "lavender", "dur": 15, "tentative": true, "details": "Zwischen Vorspeise und Hauptgang (alternativ nach dem Dessert).", "id": "p23"}, {"title": "Hauptgang", "color": "sage", "dur": 60, "tentative": true, "id": "p24"}, {"title": "Video-Quiz", "color": "lavender", "dur": 20, "details": "Max. 20 Minuten. Rote Linie: die Geschichte der Kiste.\nVorgaben allgemein: Format, Länge. Pro Szene drei Antwortmöglichkeiten.\nSchatzkiste für den ersten Hochzeitstag wird Teil des Videos; Gäste bringen Mitbringsel mit (Brief, Einladung, Geschenke).", "id": "p25"}, {"title": "Dessert", "color": "sage", "dur": 30, "tentative": true, "id": "p26"}, {"title": "Party", "color": "apricot", "until": "next", "tentative": true, "details": "Steht nicht auf dem Zettel – Platzhalter bis zum Schluss.\nOffen: Wie kommt Partystimmung auf? Jede*r bekommt etwas in die Hand – aber was?", "id": "p27"}, {"title": "Schluss", "color": "rose", "fixed": true, "time": "02:30", "dur": 0, "id": "p28"}]};
@@ -224,7 +227,70 @@ state = state && Array.isArray(state.items) ? normalize(state) : fresh();
 
 let openId = null, issuesOpen = false, focusSnap = null;
 const past = [];
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+const drafts = {};   // angefangene Kommentare, überstehen Live-Aktualisierungen
+let dirty = null;    // Textfeld, das gerade getippt und noch nicht gespeichert ist
+const saveLocal = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+const save = () => { saveLocal(); pushSync(); };
+
+/* ---------- Gemeinsame Speicherung (Firebase Firestore) ---------- */
+const FB_CONFIG = {
+  apiKey: 'AIzaSyD0pIfkkr-2sasFe3JR0snX_N4eNhXg-4A',
+  authDomain: 'ablaufplan-9a768.firebaseapp.com',
+  projectId: 'ablaufplan-9a768',
+  storageBucket: 'ablaufplan-9a768.firebasestorage.app',
+  messagingSenderId: '751888207329',
+  appId: '1:751888207329:web:f6ec2f4730d195a5d916a0'
+};
+const COL = 'ablaufplan';
+let fb = null, loaded = false, synced = {};   // synced: Dokument-ID -> zuletzt bekannter Stand
+const stable = v => JSON.stringify(v, (k, val) => val && typeof val === 'object' && !Array.isArray(val) ? Object.fromEntries(Object.keys(val).sort().map(key => [key, val[key]])) : val);
+function docsOf(s){
+  const out = {meta:{title:s.meta.title || '', subtitle:s.meta.subtitle || '', order:s.items.map(x => x.id)}};
+  s.items.forEach(x => { out['item_' + x.id] = x; });
+  return out;
+}
+function setSync(kind, text){ const el = $('#sync'); if (el){ el.className = 'sync ' + kind; el.textContent = text; } }
+// Schreibt nur geänderte Felder, damit gleichzeitige Änderungen anderer erhalten bleiben
+function pushSync(){
+  if (!fb || !loaded) return;
+  const {doc, writeBatch, deleteField} = fb.fn;
+  const cur = docsOf(state), batch = writeBatch(fb.db); let n = 0;
+  for (const [k, v] of Object.entries(cur)){
+    const js = stable(v); if (synced[k] === js) continue;
+    const prev = synced[k] ? JSON.parse(synced[k]) : null;
+    if (!prev) batch.set(doc(fb.db, COL, k), v);
+    else {
+      const ch = {};
+      new Set([...Object.keys(v), ...Object.keys(prev)]).forEach(f => { if (stable(v[f]) !== stable(prev[f])) ch[f] = v[f] === undefined ? deleteField() : v[f]; });
+      batch.set(doc(fb.db, COL, k), ch, {merge:true});
+    }
+    synced[k] = js; n++;
+  }
+  Object.keys(synced).forEach(k => { if (!(k in cur)){ batch.delete(doc(fb.db, COL, k)); delete synced[k]; n++; } });
+  if (!n) return;
+  setSync('busy', 'Speichert …');
+  batch.commit().then(() => setSync('ok', '● Live')).catch(err => { console.error(err); synced = {}; setSync('err', 'Nicht gespeichert'); });
+}
+function applyRemote(snap){
+  const docs = {}; snap.forEach(d => { docs[d.id] = d.data(); });
+  if (!docs.meta){
+    // leerer Speicher: aktuellen Stand als Startstand hochladen
+    if (!snap.metadata.fromCache && !loaded){ loaded = true; synced = {}; pushSync(); }
+    return;
+  }
+  loaded = true;
+  synced = {}; Object.entries(docs).forEach(([k, v]) => { synced[k] = stable(v); });
+  const order = docs.meta.order || [];
+  const pos = id => { const i = order.indexOf(id); return i < 0 ? 1e9 : i; };
+  const items = Object.keys(docs).filter(k => k.startsWith('item_')).map(k => docs[k]).sort((a, b) => pos(a.id) - pos(b.id));
+  const author = state.author;
+  state = normalize({meta:{title:docs.meta.title, subtitle:docs.meta.subtitle}, items});
+  state.author = author;
+  if (dirty){ const x = find(dirty.id); if (x) x[dirty.f] = dirty.v; }
+  if (openId && !find(openId)) openId = null;
+  saveLocal(); render();
+  if (!snap.metadata.hasPendingWrites) setSync(snap.metadata.fromCache ? 'busy' : 'ok', snap.metadata.fromCache ? 'Verbinde …' : '● Live');
+}
 const snap = () => JSON.stringify(state);
 const pushHistory = s => { past.push(s ?? snap()); if (past.length > 80) past.shift(); };
 function commit(fn, msg){ pushHistory(); fn(); save(); render(); if (msg) toast(msg, true); }
@@ -434,7 +500,7 @@ function renderDrawer({res}){
         ${x.comments.map(c => `<div class="comment"><div class="who">${esc(c.author || 'Anonym')}<span>${new Date(c.ts).toLocaleString('de-DE', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</span></div>
           <button class="x" data-act="com-del" data-id="${id}" data-c="${c.id}" title="Löschen">×</button><div class="txt">${esc(c.text)}</div></div>`).join('')}
         <div class="newc"><input class="inp" data-k="author" data-author value="${esc(state.author)}" placeholder="Name">
-          <input class="inp" data-k="${id}:c:new" data-newcom="${id}" placeholder="Kommentar – Enter">
+          <input class="inp" data-k="${id}:c:new" data-newcom="${id}" value="${esc(drafts[id] || '')}" placeholder="Kommentar – Enter">
           <button class="btn" data-act="com-add" data-id="${id}">+</button></div>
       </div>
     </div>
@@ -546,6 +612,7 @@ document.addEventListener('click', e => {
 function addComment(id){
   const el = document.querySelector(`[data-newcom="${id}"]`), t = el?.value.trim();
   if (!t){ el?.focus(); return; }
+  drafts[id] = '';
   commit(() => find(id).comments.push({id:uid(), author:state.author, text:t, ts:Date.now()}));
 }
 
@@ -554,15 +621,16 @@ document.addEventListener('focusin', () => { focusSnap = snap(); });
 document.addEventListener('input', e => {
   const el = e.target, x = find(el.dataset.id);
   if (el.hasAttribute('data-author')) state.author = el.value;
-  else if (x && TEXT.includes(el.dataset.f)) x[el.dataset.f] = el.value;
+  else if (el.dataset.newcom){ drafts[el.dataset.newcom] = el.value; return; }
+  else if (x && TEXT.includes(el.dataset.f)){ x[el.dataset.f] = el.value; dirty = {id:x.id, f:el.dataset.f, v:el.value}; }
   else return;
-  save();
+  saveLocal();
 });
 document.addEventListener('change', e => {
   const el = e.target;
   const x = find(el.dataset.id); if (!x) return;
   const f = el.dataset.f;
-  if (TEXT.includes(f)){ pushHistory(focusSnap); focusSnap = snap(); render(); return; }
+  if (TEXT.includes(f)){ dirty = null; pushHistory(focusSnap); focusSnap = snap(); save(); render(); return; }
   if (f === 'tentative') return commit(() => { x.tentative = el.checked; });
   if (f === 'fixed') return commit(() => { x.fixed = el.checked; if (x.fixed && !x.time) x.time = hhmm(compute().res[x.id].start); });
   if (f === 'anchor') return commit(() => {
@@ -622,6 +690,16 @@ $('#fileIn').onchange = e => {
 };
 
 render();
+
+(async () => {
+  try {
+    const V = 'https://www.gstatic.com/firebasejs/10.12.2/';
+    const [{initializeApp}, fs] = await Promise.all([import(V + 'firebase-app.js'), import(V + 'firebase-firestore.js')]);
+    fb = {db:fs.getFirestore(initializeApp(FB_CONFIG)), fn:fs};
+    setSync('busy', 'Verbinde …');
+    fs.onSnapshot(fs.collection(fb.db, COL), {includeMetadataChanges:true}, applyRemote, err => { console.error(err); setSync('err', 'Offline · nur lokal'); });
+  } catch (e) { console.error(e); setSync('err', 'Offline · nur lokal'); }
+})();
 })();
 </script>
 </body>
