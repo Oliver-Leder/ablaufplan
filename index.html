@@ -116,9 +116,6 @@ textarea.inp{resize:vertical;min-height:80px;line-height:1.45}
 .cb{appearance:none;-webkit-appearance:none;width:17px;height:17px;border:1.5px solid var(--ink);border-radius:4px;margin:0;display:grid;place-content:center;cursor:pointer;flex:none;background:#fff}
 .cb:checked{background:var(--ink)}
 .cb:checked:after{content:"";width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
-.list .item{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--rule)}
-.list .item .inp{border:0;padding:7px 0;border-radius:0}
-.list .item.done .inp{text-decoration:line-through;color:var(--muted)}
 .x{background:none;border:0;cursor:pointer;color:var(--muted);font-size:18px;padding:2px 6px}
 .x:hover{color:var(--err)}
 .plus{width:17px;text-align:center;color:var(--muted)}
@@ -195,8 +192,8 @@ footer{font-family:var(--sans);font-weight:300;font-size:12px;color:var(--muted)
 <script>
 (() => {
 'use strict';
-const SEED = {"meta": {"title": "Hochzeit", "subtitle": "Ablauf fürs Planungsteam · 17.10.2026"}, "author": "", "items": [{"title": "Frühstück", "color": "butter", "fixed": true, "time": "07:00", "dur": 30, "tentative": true, "details": "Uhrzeit steht nicht auf dem Zettel – bitte festlegen.", "id": "p1", "todos": []}, {"title": "Get Ready", "color": "sky", "fixed": true, "time": "07:30", "auto": true, "id": "p2", "todos": []}, {"title": "First Look", "color": "rose", "fixed": true, "time": "11:45", "dur": 20, "tentative": true, "id": "p3", "todos": []}, {"title": "Fotoshoot", "color": "rose", "auto": true, "details": "Paar-Shooting direkt nach dem First Look.", "id": "p4", "todos": []}, {"title": "Einlauf der Braut", "color": "butter", "fixed": true, "time": "12:55", "dur": 5, "id": "p5", "todos": []}, {"title": "Trauung", "color": "sage", "fixed": true, "time": "13:00", "auto": true, "location": "Kirche", "details": "Musik: nur Chor und Klavier, kein Orchester.", "id": "p6", "todos": []}, {"title": "Kuchen", "color": "apricot", "fixed": true, "time": "14:00", "auto": true, "id": "p7", "todos": []}, {"title": "Abfahrt Schloss", "color": "butter", "fixed": true, "time": "15:00", "dur": 30, "id": "p8", "todos": []}, {"title": "Fotoshoot", "color": "rose", "fixed": true, "time": "16:00", "auto": true, "location": "Schloss", "id": "p9", "todos": []}, {"title": "Chaoskarten verteilen", "color": "butter", "parallel": true, "auto": true, "details": "Während das Paar beim Shooting ist.", "todos": [{"id": "t11", "text": "Chaoskarten gekauft und individualisiert", "done": true}], "id": "p10"}, {"title": "Empfang Schloss", "color": "sky", "fixed": true, "time": "16:30", "auto": true, "location": "Schloss", "details": "Rückkehr vom Shooting: Begrüßung und Jubel.\nIdee: Fanfare zur Anfahrt, Verlesen wie im Adel.", "todos": [{"id": "t13", "text": "Jubel / Begrüßung festlegen", "done": false}, {"id": "t14", "text": "Fanfare organisieren?", "done": false}], "id": "p12"}, {"title": "Puzzlespiel", "color": "sky", "parallel": true, "auto": true, "details": "Statt Fotobox: Alle bekommen ein Puzzleteil, suchen die passenden Personen und kommen ins Gespräch. Der Fotograf macht das Gruppenfoto.", "todos": [{"id": "t16", "text": "Puzzlestücke passend zur Gästezahl", "done": false}, {"id": "t17", "text": "Fotograf briefen", "done": false}], "id": "p15"}, {"title": "Kleine Rede mit Vorstellung", "color": "apricot", "fixed": true, "time": "17:00", "dur": 20, "tentative": true, "id": "p18", "todos": []}, {"title": "Nebenher den ganzen Abend", "color": "lavender", "parallel": true, "until": "end", "details": "Kreatives Gästebuch: große Leinwand, jede*r malt einen Strich in Grüntönen.\nAudio-Gästebuch: QR-Codes auf den Tischen (gebucht).\nFotoaufgaben auf den Stühlen, Puzzle-Personen fotografieren.\nChaoskarten, Spieltisch, Gäste-Collage.", "todos": [{"id": "t20", "text": "Leinwand + Staffelei", "done": false}, {"id": "t21", "text": "Audio-Gästebuch gebucht", "done": true}, {"id": "t22", "text": "Fotoaufgaben auf die Stühle", "done": false}, {"id": "t23", "text": "Spieltisch aufbauen", "done": false}], "id": "p19"}, {"title": "Ideen – noch offen", "color": "lavender", "parallel": true, "until": "end", "tentative": true, "details": "Tattoo-Station: Motive vom Paar, schön und lustig.\n10 Gläser: ein Glas pro Hochzeitstag bis zum 10., Gäste schreiben Wünsche, Witze, Gedanken.\nFotoecke mit Kinderbildern: Anfrage beim Paar läuft.", "todos": [{"id": "t25", "text": "Tattoo-Station: Kosten klären", "done": false}, {"id": "t26", "text": "10 Gläser + Zettel + Stifte", "done": false}, {"id": "t27", "text": "Fotoecke: Antwort vom Paar abwarten", "done": false}], "id": "p24"}, {"title": "Flugbegleiter-Einführung", "color": "lavender", "fixed": true, "time": "18:45", "dur": 15, "tentative": true, "details": "Wenn alle sitzen, vor dem Essen.", "id": "p28", "todos": []}, {"title": "Vorspeise", "color": "sage", "fixed": true, "time": "19:00", "dur": 40, "tentative": true, "details": "Kein Programm während des Essens – nur zwischen den Gängen.", "id": "p29", "todos": []}, {"title": "Sandmalerei", "color": "lavender", "dur": 15, "tentative": true, "details": "Zwischen Vorspeise und Hauptgang (alternativ nach dem Dessert).", "id": "p30", "todos": []}, {"title": "Hauptgang", "color": "sage", "dur": 60, "tentative": true, "id": "p31", "todos": []}, {"title": "Video-Quiz", "color": "lavender", "dur": 20, "details": "Max. 20 Minuten. Rote Linie: die Geschichte der Kiste.\nVorgaben allgemein: Format, Länge. Pro Szene drei Antwortmöglichkeiten.", "todos": [{"id": "t33", "text": "Vorgaben an alle Mitwirkenden", "done": false}, {"id": "t34", "text": "Schatzkiste für den 1. Hochzeitstag bauen", "done": false}, {"id": "t35", "text": "Aufruf an Gäste: Mitbringsel für die Schatzkiste", "done": false}], "id": "p32"}, {"title": "Dessert", "color": "sage", "dur": 30, "tentative": true, "id": "p36", "todos": []}, {"title": "Party", "color": "apricot", "auto": true, "tentative": true, "details": "Steht nicht auf dem Zettel – Platzhalter bis zum Schluss.\nHochprozentiges kommt vom Schloss.", "id": "p37", "todos": []}, {"title": "Schluss", "color": "rose", "fixed": true, "time": "02:30", "dur": 0, "id": "p38", "todos": []}]};
-const KEY = 'hochzeit-ablauf-v2';
+const SEED = {"meta": {"title": "Hochzeit", "subtitle": "Ablauf fürs Planungsteam · 17.10.2026"}, "author": "", "items": [{"title": "Frühstück", "color": "butter", "fixed": true, "time": "07:00", "dur": 30, "tentative": true, "details": "Uhrzeit steht nicht auf dem Zettel – bitte festlegen.", "id": "p1"}, {"title": "Get Ready", "color": "sky", "fixed": true, "time": "07:30", "until": "next", "id": "p2"}, {"title": "First Look", "color": "rose", "fixed": true, "time": "11:45", "dur": 20, "tentative": true, "id": "p3"}, {"title": "Fotoshoot", "color": "rose", "until": "next", "details": "Paar-Shooting direkt nach dem First Look.", "id": "p4"}, {"title": "Einlauf der Braut", "color": "butter", "fixed": true, "time": "12:55", "dur": 5, "id": "p5"}, {"title": "Trauung", "color": "sage", "fixed": true, "time": "13:00", "until": "next", "location": "Kirche", "details": "Musik: nur Chor und Klavier, kein Orchester.\nOffen: Gäste informieren, dass sie ihr Zimmer in der Location erst später beziehen?", "id": "p6"}, {"title": "Kuchen", "color": "apricot", "fixed": true, "time": "14:00", "until": "next", "id": "p7"}, {"title": "Abfahrt Schloss", "color": "butter", "fixed": true, "time": "15:00", "dur": 30, "id": "p8"}, {"title": "Fotoshoot", "color": "rose", "fixed": true, "time": "16:00", "until": "next", "location": "Schloss", "id": "p9"}, {"title": "Chaoskarten verteilen", "color": "butter", "parallel": true, "until": "next", "details": "Während das Paar beim Shooting ist. Karten sind gekauft und individualisiert.", "id": "p10"}, {"title": "Empfang Schloss", "color": "sky", "fixed": true, "time": "16:30", "until": "next", "location": "Schloss", "details": "Rückkehr vom Shooting: Begrüßung und Jubel.\nOffen: Wie jubeln wir? Idee: Fanfare zur Anfahrt, Verlesen wie im Adel.\nHochprozentiges kommt vom Schloss.", "id": "p11"}, {"title": "Puzzlespiel zum Kennenlernen", "color": "sky", "parallel": true, "until": "next", "details": "Statt Fotobox: Alle bekommen ein Puzzleteil, suchen die passenden Personen und kommen ins Gespräch. Der Fotograf macht das Gruppenfoto.\nPuzzlestücke passend zur Gästezahl, Fotograf briefen.", "id": "p12"}, {"title": "Kleine Rede mit Vorstellung", "color": "apricot", "fixed": true, "time": "17:00", "dur": 20, "tentative": true, "id": "p13"}, {"title": "Gästebuch-Leinwand", "color": "sage", "parallel": true, "until": "end", "details": "Kreatives Gästebuch: große Leinwand, jede*r malt einen Strich in verschiedenen Grüntönen (für die nackten Wände). Braucht eine Staffelei.", "id": "p14"}, {"title": "Fotoaufgaben & Gäste-Collage", "color": "rose", "parallel": true, "until": "end", "details": "Fotoaufgaben liegen auf den Stühlen. Puzzle-Personen wiederfinden und fotografieren. Daraus entsteht die Gäste-Collage.", "id": "p15"}, {"title": "Ideen (offen): Tattoo-Station", "color": "stone", "parallel": true, "until": "end", "tentative": true, "details": "Tattoos mit Motiven vom Paar – schön und lustig (Köpfe, Familienwappen …). Kosten klären.", "id": "p16"}, {"title": "Ideen (offen): 10 Gläser", "color": "stone", "parallel": true, "until": "end", "tentative": true, "details": "Ein Glas pro Hochzeitstag bis zum 10. Zettel und Stifte daneben – Gäste schreiben Wünsche, Witze, Gedanken für das jeweilige Jahr.", "id": "p17"}, {"title": "Ideen (offen): Fotoecke mit Kinderbildern", "color": "stone", "parallel": true, "until": "end", "tentative": true, "details": "Anfrage beim Paar läuft, ob sie das wollen.", "id": "p18"}, {"title": "Flugbegleiter-Einführung", "color": "lavender", "fixed": true, "time": "18:45", "dur": 15, "tentative": true, "details": "Wenn alle sitzen, vor dem Essen.", "id": "p19"}, {"title": "Vorspeise", "color": "sage", "fixed": true, "time": "19:00", "dur": 40, "tentative": true, "details": "Kein Programm während des Essens – nur zwischen den Gängen.", "id": "p20"}, {"title": "Audio-Gästebuch (QR-Codes)", "color": "sky", "parallel": true, "until": "end", "details": "QR-Codes (Hochzeitsedition) auf den Tischen verteilt, zusammen mit Fotoaufgaben. Paket ist gebucht.", "id": "p21"}, {"title": "Spieltisch", "color": "butter", "parallel": true, "until": "end", "tentative": true, "details": "Steht auf dem Zettel bei den Parallel-Aktionen zum Dinner.", "id": "p22"}, {"title": "Sandmalerei", "color": "lavender", "dur": 15, "tentative": true, "details": "Zwischen Vorspeise und Hauptgang (alternativ nach dem Dessert).", "id": "p23"}, {"title": "Hauptgang", "color": "sage", "dur": 60, "tentative": true, "id": "p24"}, {"title": "Video-Quiz", "color": "lavender", "dur": 20, "details": "Max. 20 Minuten. Rote Linie: die Geschichte der Kiste.\nVorgaben allgemein: Format, Länge. Pro Szene drei Antwortmöglichkeiten.\nSchatzkiste für den ersten Hochzeitstag wird Teil des Videos; Gäste bringen Mitbringsel mit (Brief, Einladung, Geschenke).", "id": "p25"}, {"title": "Dessert", "color": "sage", "dur": 30, "tentative": true, "id": "p26"}, {"title": "Party", "color": "apricot", "until": "next", "tentative": true, "details": "Steht nicht auf dem Zettel – Platzhalter bis zum Schluss.\nOffen: Wie kommt Partystimmung auf? Jede*r bekommt etwas in die Hand – aber was?", "id": "p27"}, {"title": "Schluss", "color": "rose", "fixed": true, "time": "02:30", "dur": 0, "id": "p28"}]};
+const KEY = 'hochzeit-ablauf-v3';
 const COLORS = [['rose','Rosé'],['apricot','Apricot'],['butter','Champagner'],['sage','Salbei'],['sky','Taubenblau'],['lavender','Lavendel'],['stone','Neutral']];
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -204,7 +201,10 @@ const $ = s => document.querySelector(s);
 
 /* ---------- Zustand ---------- */
 function blank(o = {}){
-  const x = Object.assign({id:uid(), title:'', color:'sage', fixed:false, time:'', dur:30, until:'min', parallel:false, tentative:false, location:'', person:'', details:'', todos:[], comments:[]}, o);
+  const x = Object.assign({id:uid(), title:'', color:'sage', fixed:false, time:'', dur:30, until:'min', parallel:false, tentative:false, location:'', person:'', details:'', comments:[]}, o);
+  // alte Checklisten in die Notizen übernehmen
+  if (Array.isArray(x.todos) && x.todos.length) x.details = [x.details, ...x.todos.map(t => '– ' + t.text)].filter(Boolean).join('\n');
+  delete x.todos;
   if (o.until == null && o.auto != null) x.until = o.auto ? 'next' : 'min';
   delete x.auto;
   if (!x.parallel && x.until === 'end') x.until = 'min';
@@ -350,7 +350,7 @@ function renderGrid({res, issues}){
   const {rows, main, par, gaps} = layout(res);
   const mainCols = Math.max(1, main.n), parCols = par.n;
   const tw = 58;
-  g.style.gridTemplateColumns = `${tw}px repeat(${mainCols}, minmax(170px, 1.6fr))` + (parCols ? ` repeat(${parCols}, minmax(140px, 1fr))` : '');
+  g.style.gridTemplateColumns = `${tw}px repeat(${mainCols}, minmax(170px, 1.6fr))` + (parCols ? ` repeat(${parCols}, minmax(118px, 1fr))` : '');
   g.style.gridTemplateRows = 'auto ' + rows.map(r => r.tail ? '26px' : r.zero ? 'minmax(30px, auto)' : `minmax(${Math.round(Math.min(130, Math.max(30, 16 + (r.end - r.start) * 0.42)))}px, auto)`).join(' ');
   const R = i => i + 2; // Zeile 1 = Kopf
   let h = `<div class="hdr" style="grid-column:1;grid-row:1"></div>`;
@@ -369,8 +369,6 @@ function renderGrid({res, issues}){
   const blk = (p, col) => {
     const x = p.x, r = res[x.id], my = issues.filter(s => s.id === x.id && s.level === 'err').length;
     const rowsSpanned = p.s[1] - p.s[0];
-    const openT = x.todos.filter(t => !t.done).length;
-    const todo = openT ? ` · ☐ ${openT} offen` : x.todos.length ? ' · ☑' : '';
     const com = x.comments.length ? ` · 💬 ${x.comments.length}` : '';
     const who = x.person ? ` · ${esc(x.person)}` : '';
     const zero = r.dur === 0;
@@ -378,7 +376,7 @@ function renderGrid({res, issues}){
     return `<div class="blk${zero ? ' zero' : ''}${x.tentative ? ' tent' : ''}${my ? ' err' : ''}${openId === x.id ? ' sel' : ''}" data-c="${esc(x.color)}" data-open="${x.id}"
       style="grid-column:${col};grid-row:${R(p.s[0])} / ${R(p.s[1])};--lines:${lines}" title="${esc(x.details)}">
       <div class="t">${esc(x.title) || '<span style="color:var(--muted)">Ohne Titel</span>'}</div>
-      <div class="m"><b>${hhmm(r.start)}${zero ? '' : '–' + hhmm(r.end)}</b>${zero ? '' : ' · ' + fmtDur(r.dur)}${x.tentative ? ' · <i>vorläufig</i>' : ''}${who}${todo}${com}</div>
+      <div class="m"><b>${hhmm(r.start)}${zero ? '' : '–' + hhmm(r.end)}</b>${zero ? '' : ' · ' + fmtDur(r.dur)}${x.tentative ? ' · <i>vorläufig</i>' : ''}${who}${com}</div>
       ${lines && x.details ? `<div class="n">${esc(x.details)}</div>` : ''}
     </div>`;
   };
@@ -431,14 +429,6 @@ function renderDrawer({res}){
       </div>
 
       <div class="fld"><label class="lbl">Notizen</label><textarea class="inp" ${k('details')} placeholder="Ablauf, Ideen, Absprachen …">${esc(x.details)}</textarea></div>
-
-      <div class="fld"><label class="lbl">Aufgaben &amp; Material</label><div class="list">
-        ${x.todos.map(t => `<div class="item${t.done ? ' done' : ''}">
-          <input type="checkbox" class="cb" data-act="todo-done" data-id="${id}" data-t="${t.id}" ${t.done ? 'checked' : ''}>
-          <input class="inp" data-k="${id}:t:${t.id}" data-todo="${t.id}" data-id="${id}" value="${esc(t.text)}">
-          <button class="x" data-act="todo-del" data-id="${id}" data-t="${t.id}" title="Entfernen">×</button></div>`).join('')}
-        <div class="item"><span class="plus">+</span><input class="inp" data-k="${id}:t:new" data-newtodo="${id}" placeholder="Neue Aufgabe – Enter"></div>
-      </div></div>
 
       <div class="fld"><label class="lbl">Kommentare</label>
         ${x.comments.map(c => `<div class="comment"><div class="who">${esc(c.author || 'Anonym')}<span>${new Date(c.ts).toLocaleString('de-DE', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</span></div>
@@ -542,14 +532,13 @@ document.addEventListener('click', e => {
         state.items.splice(s, grp.length); state.items.splice(ne - grp.length, 0, ...grp);
       }
     }); break;
-    case 'dup': { const c = JSON.parse(JSON.stringify(x)); Object.assign(c, {id:uid(), title:x.title + ' (Kopie)', comments:[]}); if (!c.parallel) c.fixed = false; c.todos.forEach(t => t.id = uid()); commit(() => state.items.splice(x.parallel ? idx(id) + 1 : groupRange(idx(id))[1], 0, c)); openItem(c.id, true); break; }
+    case 'dup': { const c = JSON.parse(JSON.stringify(x)); Object.assign(c, {id:uid(), title:x.title + ' (Kopie)', comments:[]}); if (!c.parallel) c.fixed = false; commit(() => state.items.splice(x.parallel ? idx(id) + 1 : groupRange(idx(id))[1], 0, c)); openItem(c.id, true); break; }
     case 'del': armed(b, 'Wirklich löschen?', () => commit(() => { state.items.splice(idx(id), 1); openId = null; }, `„${T(x)}“ gelöscht`)); break;
     case 'fillgap': {
       const n = blank({dur:+b.dataset.gap});
       commit(() => { const j = id ? idx(id) : state.items.length; state.items.splice(j, 0, n); });
       openItem(n.id, true); break;
     }
-    case 'todo-del': commit(() => { x.todos = x.todos.filter(t => t.id !== b.dataset.t); }); break;
     case 'com-add': addComment(id); break;
     case 'com-del': commit(() => { x.comments = x.comments.filter(c => c.id !== b.dataset.c); }, 'Kommentar gelöscht'); break;
   }
@@ -565,17 +554,15 @@ document.addEventListener('focusin', () => { focusSnap = snap(); });
 document.addEventListener('input', e => {
   const el = e.target, x = find(el.dataset.id);
   if (el.hasAttribute('data-author')) state.author = el.value;
-  else if (el.dataset.todo){ const t = x?.todos.find(t => t.id === el.dataset.todo); if (t) t.text = el.value; }
   else if (x && TEXT.includes(el.dataset.f)) x[el.dataset.f] = el.value;
   else return;
   save();
 });
 document.addEventListener('change', e => {
   const el = e.target;
-  if (el.dataset.act === 'todo-done'){ commit(() => { find(el.dataset.id).todos.find(t => t.id === el.dataset.t).done = el.checked; }); return; }
   const x = find(el.dataset.id); if (!x) return;
   const f = el.dataset.f;
-  if (el.dataset.todo || TEXT.includes(f)){ pushHistory(focusSnap); focusSnap = snap(); render(); return; }
+  if (TEXT.includes(f)){ pushHistory(focusSnap); focusSnap = snap(); render(); return; }
   if (f === 'tentative') return commit(() => { x.tentative = el.checked; });
   if (f === 'fixed') return commit(() => { x.fixed = el.checked; if (x.fixed && !x.time) x.time = hhmm(compute().res[x.id].start); });
   if (f === 'anchor') return commit(() => {
@@ -590,9 +577,8 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => {
   const el = e.target; if (e.key !== 'Enter') return;
-  if (el.dataset.newtodo){ e.preventDefault(); const v = el.value.trim(); if (v) commit(() => find(el.dataset.newtodo).todos.push({id:uid(), text:v, done:false})); }
-  else if (el.dataset.newcom){ e.preventDefault(); addComment(el.dataset.newcom); }
-  else if (el.dataset.f === 'title' || el.dataset.todo){ e.preventDefault(); el.blur(); }
+  if (el.dataset.newcom){ e.preventDefault(); addComment(el.dataset.newcom); }
+  else if (el.dataset.f === 'title'){ e.preventDefault(); el.blur(); }
 });
 
 /* ---------- Toast ---------- */
@@ -623,7 +609,7 @@ $('#menu').addEventListener('click', e => {
     let md = `# ${state.meta.title}\n\n| Zeit | Punkt | Notizen |\n|---|---|---|\n`;
     state.items.forEach(x => {
       const r = res[x.id];
-      const bits = [x.location, x.person && 'Wer: ' + x.person, x.details.replace(/\n/g, ' '), x.todos.map(t => (t.done ? '☑ ' : '☐ ') + t.text).join(', '), x.tentative && '_vorläufig_'].filter(Boolean).join(' · ');
+      const bits = [x.location, x.person && 'Wer: ' + x.person, x.details.replace(/\n/g, ' '), x.tentative && '_vorläufig_'].filter(Boolean).join(' · ');
       md += `| ${hhmm(r.start)}–${hhmm(r.end)} | ${x.parallel ? '↳ ' : ''}**${x.title}** | ${bits.replace(/\|/g, '/')} |\n`;
     });
     navigator.clipboard.writeText(md).then(() => toast('Als Markdown kopiert'), () => toast('Kopieren nicht möglich'));
