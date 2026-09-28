@@ -1,4 +1,4 @@
-# Hochzeit · Zeitplan
+# Ablaufplan
 
 Interaktiver Ablaufplan für einen Hochzeitstag – eine einzelne HTML-Datei, ohne Build.
 
