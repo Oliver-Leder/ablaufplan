@@ -3,245 +3,231 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hochzeitstag · Zeitplan</title>
+<title>Hochzeit · Ablaufplan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#fbfaf7; --card:#ffffff; --ink:#141414; --ink-2:#4a4a48; --muted:#8a8883;
-  --line:#e2dfd8; --line-2:#cfcbc2; --soft:#f3f1ec;
-  --warn:#8a6a1f; --warn-bg:#faf5e8; --err:#8e2b2b; --err-bg:#fbefed; --ok:#2f5d44;
-  --serif:"Cormorant Garamond","Cormorant",Garamond,"Times New Roman",serif;
+  --paper:#fbfaf7; --card:#fff; --ink:#1a1a1a; --ink-2:#4d4b47; --muted:#8d8a84;
+  --line:#e6e2da; --line-2:#d2cdc3; --soft:#f4f1ec;
+  --err:#a23d4a; --err-bg:#fbeef0; --warn:#8a6a1f; --warn-bg:#fbf5e4; --ok:#4f6b3f; --ok-bg:#eef4e8;
+  --serif:"Cormorant Garamond",Garamond,"Times New Roman",serif;
   --sans:"Jost","Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+/* Pastellfarben – angelehnt an die Klebezettel */
+[data-c="rose"]{--c:#e3a3ad;--cb:#fcf1f3;--ci:#96505c}
+[data-c="apricot"]{--c:#eab48c;--cb:#fdf3eb;--ci:#9a5a2c}
+[data-c="butter"]{--c:#e2cb7e;--cb:#fcf7e6;--ci:#86691a}
+[data-c="sage"]{--c:#a9c196;--cb:#f2f6ee;--ci:#52703e}
+[data-c="sky"]{--c:#9fbbd6;--cb:#eff4f9;--ci:#436584}
+[data-c="lavender"]{--c:#bdaedb;--cb:#f5f2fb;--ci:#65538e}
+[data-c="stone"]{--c:#c5c0b6;--cb:#f6f4f0;--ci:#5d5a54}
+
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper);color:var(--ink)}
-body{font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 20px 80px}
-button,input,textarea,select{font:inherit;color:inherit}
-.wrap{max-width:860px;margin:0 auto}
+body{font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;padding:0 20px 90px}
+button,input,textarea{font:inherit;color:inherit}
+.wrap{max-width:820px;margin:0 auto}
+[hidden]{display:none!important}
 
-/* ---------- Kopf ---------- */
-header.hero{text-align:center;padding:64px 0 28px}
+/* Kopf */
+header.hero{text-align:center;padding:56px 0 22px}
 .eyebrow{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted)}
-.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,7vw,64px);line-height:1.05;margin:14px 0 10px;letter-spacing:.01em}
-.hero .sub{font-family:var(--serif);font-style:italic;font-size:21px;color:var(--ink-2)}
-.hero .date{margin-top:6px;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-2)}
-[contenteditable]{outline:none;border-radius:2px;transition:background .15s}
-[contenteditable]:hover{background:var(--soft)}
-[contenteditable]:focus{background:var(--soft);box-shadow:0 1px 0 var(--ink)}
-[contenteditable]:empty:before{content:attr(data-ph);color:var(--muted)}
-.ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin:26px auto 0;color:var(--ink);width:220px}
-.ornament:before,.ornament:after{content:"";flex:1;height:1px;background:var(--ink);opacity:.5}
-.ornament span{font-family:var(--serif);font-size:18px;line-height:1}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,7vw,60px);line-height:1.05;margin:12px 0 8px}
+.hero .sub{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-2)}
+[contenteditable]{outline:none;border-radius:3px;transition:background .15s}
+[contenteditable]:hover,[contenteditable]:focus{background:var(--soft)}
+.dots{display:flex;justify-content:center;gap:9px;margin:22px 0 0}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--c);display:block}
+.overview{text-align:center;margin-top:16px;font-size:13px;letter-spacing:.06em;color:var(--ink-2)}
+.overview b{font-weight:500;color:var(--ink)}
 
-/* ---------- Leiste ---------- */
-.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(251,250,247,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:10px 0 0}
-.toolbar .wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.btn{background:transparent;border:1px solid var(--line-2);border-radius:999px;padding:7px 15px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .15s;white-space:nowrap}
+/* Leiste */
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(251,250,247,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 0;margin-top:18px}
+.toolbar .wrap{display:flex;gap:8px;align-items:center;position:relative}
+.btn{background:transparent;border:1px solid var(--line-2);border-radius:999px;padding:8px 16px;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap;font-weight:400}
 .btn:hover{border-color:var(--ink)}
 .btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn.primary:hover{background:#333}
-.btn.ghost{border-color:transparent}
-.btn.ghost:hover{border-color:var(--line-2)}
-.btn.danger{color:var(--err);border-color:#e6c9c5}
+.btn.primary:hover{background:#3a3a3a}
+.btn.icon{padding:8px 12px}
+.btn:disabled{opacity:.3;cursor:default;border-color:var(--line-2)}
+.btn.danger{color:var(--err);border-color:#ebc9ce}
 .btn.danger.armed{background:var(--err);color:#fff;border-color:var(--err)}
-.btn:disabled{opacity:.35;cursor:default}
 .spacer{flex:1}
+.pill{border:0;border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:400}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.err{background:var(--err-bg);color:var(--err)}
+.menu{position:absolute;right:0;top:calc(100% + 8px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px -18px rgba(0,0,0,.3);padding:6px;min-width:230px}
+.menu button{display:block;width:100%;text-align:left;background:none;border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px}
+.menu button:hover{background:var(--soft)}
+.menu hr{border:0;border-top:1px solid var(--line);margin:6px 4px}
+.menu .danger{color:var(--err)}
+.issues{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:14px;padding:6px 16px}
+.issues li{list-style:none;padding:10px 0;border-bottom:1px dashed var(--line);cursor:pointer;display:flex;gap:10px;font-size:14px}
+.issues li:last-child{border-bottom:0}
+.issues ul{margin:0;padding:0}
+.issues li:hover span:last-child{text-decoration:underline}
+.issues .lv{flex:none;width:8px;height:8px;border-radius:50%;margin-top:7px;background:var(--warn)}
+.issues .lv.err{background:var(--err)}
 
-/* ---------- Übersicht ---------- */
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--card);margin:28px 0 0}
-.summary > div{padding:16px 18px;border-right:1px solid var(--line)}
-.summary > div:last-child{border-right:0}
-.summary .k{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
-.summary .v{font-family:var(--serif);font-size:28px;line-height:1.2;margin-top:4px}
-.summary .v small{font-size:15px;color:var(--muted)}
-.checks{border:1px solid var(--line);border-top:0;background:var(--card)}
-.checks summary{list-style:none;cursor:pointer;padding:12px 18px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
-.checks summary::-webkit-details-marker{display:none}
-.checks summary .chev{margin-left:auto;transition:transform .2s;color:var(--muted)}
-.checks[open] summary .chev{transform:rotate(180deg)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
-.status-dot.warn{background:var(--warn)} .status-dot.err{background:var(--err)}
-.checks ul{list-style:none;margin:0;padding:0 18px 12px}
-.checks li{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-top:1px dashed var(--line);font-size:14px;cursor:pointer}
-.checks li:hover .ct{text-decoration:underline}
-.tag{font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:2px 7px;border-radius:2px;flex:none}
-.tag.err{background:var(--err-bg);color:var(--err)} .tag.warn{background:var(--warn-bg);color:var(--warn)} .tag.info{background:var(--soft);color:var(--ink-2)}
-
-/* ---------- Zeitleiste ---------- */
-ol.timeline{list-style:none;margin:40px 0 0;padding:0;position:relative}
-ol.timeline:before{content:"";position:absolute;left:118px;top:6px;bottom:6px;width:1px;background:var(--ink);opacity:.8}
-.row{display:grid;grid-template-columns:100px 36px 1fr;align-items:start;position:relative;padding:0 0 14px}
-.row .time{text-align:right;padding-top:14px}
-.t-start{font-family:var(--serif);font-size:24px;line-height:1;font-weight:500;letter-spacing:.02em;display:block}
-.t-end{font-size:12px;color:var(--muted);letter-spacing:.06em;display:block;margin-top:5px}
-.t-flag{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-2);display:inline-block;margin-top:5px;border-top:1px solid var(--ink);padding-top:2px}
-.t-flag.calc{color:var(--muted);border-color:var(--line-2)}
+/* Zeitleiste */
+ol.timeline{list-style:none;margin:30px 0 0;padding:0;position:relative}
+ol.timeline:before{content:"";position:absolute;left:103px;top:8px;bottom:8px;width:1px;background:var(--line-2)}
+.row{display:grid;grid-template-columns:86px 34px 1fr;padding:0 0 12px;position:relative}
+.time{text-align:right;padding-top:13px}
+.t-start{font-family:var(--serif);font-size:23px;line-height:1;font-weight:600;display:block;color:var(--ci)}
+.row:not(.fixed) .t-start{font-weight:400;color:var(--ink-2)}
+.t-end{font-size:12px;color:var(--muted);display:block;margin-top:4px}
 .plus1{font-size:10px;vertical-align:super;color:var(--muted);margin-left:1px}
-.node{position:relative;height:100%}
-.node:after{content:"";position:absolute;left:14px;top:20px;width:9px;height:9px;border-radius:50%;background:var(--paper);border:1px solid var(--ink)}
-.row.fixed .node:after{background:var(--ink)}
+.node{position:relative}
+.node:after{content:"";position:absolute;left:12px;top:17px;width:11px;height:11px;border-radius:50%;background:var(--paper);border:2px solid var(--c)}
+.row.fixed .node:after{background:var(--c)}
 .row.has-err .node:after{border-color:var(--err);background:var(--err)}
-
-.card{background:var(--card);border:1px solid var(--line);padding:14px 18px 14px 14px;position:relative;transition:border-color .15s, box-shadow .15s;display:grid;grid-template-columns:18px 1fr;gap:0 8px}
-.card:hover{border-color:var(--line-2)}
-.row.open .card{border-color:var(--ink);box-shadow:0 10px 30px -18px rgba(0,0,0,.35)}
-.grip{cursor:grab;color:var(--line-2);font-size:14px;line-height:1;padding-top:6px;user-select:none;letter-spacing:-2px}
-.grip:hover{color:var(--ink)}
+.card{background:linear-gradient(100deg,var(--cb) 0%,#fff 70%);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:4px 10px 10px 4px;padding:12px 16px;display:grid;grid-template-columns:1fr auto;gap:0 10px;transition:box-shadow .15s,border-color .15s}
+.card:hover{box-shadow:0 8px 22px -16px rgba(0,0,0,.35)}
+.row.open .card{box-shadow:0 14px 34px -18px rgba(0,0,0,.35);border-color:var(--c);border-left-width:4px}
 .head{cursor:pointer;min-width:0}
-.title{font-family:var(--serif);font-size:23px;line-height:1.2;font-weight:500;margin:0;word-wrap:break-word}
-.meta{font-size:12.5px;color:var(--ink-2);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 14px}
-.meta .sep{color:var(--line-2)}
-.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.badge{font-size:10px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--line-2);color:var(--ink-2);padding:2px 8px;border-radius:999px}
-.badge.dark{background:var(--ink);border-color:var(--ink);color:#fff}
-.badge.warn{border-color:#e4d5ae;color:var(--warn);background:var(--warn-bg)}
-.badge.err{border-color:#e6c9c5;color:var(--err);background:var(--err-bg)}
-.preview{font-size:13.5px;color:var(--ink-2);margin-top:8px;white-space:pre-line;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.todos-preview{margin:8px 0 0;padding:0;list-style:none;font-size:13.5px;color:var(--ink-2)}
-.todos-preview li:before{content:"— ";color:var(--muted)}
-.todos-preview li.done{text-decoration:line-through;color:var(--muted)}
+.title{color:var(--ink);font-family:var(--serif);font-size:22px;line-height:1.2;font-weight:500;margin:0}
+.meta{font-size:13px;color:var(--ink-2);margin-top:2px}
+.meta span+span:before{content:" · ";color:var(--line-2)}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.badge{font-size:11.5px;padding:2px 9px;border-radius:999px;background:var(--cb);color:var(--ci)}
+.row.parallel .badge{background:#fff}
+.badge.warn{background:var(--warn-bg);color:var(--warn)}
+.badge.err{background:var(--err-bg);color:var(--err)}
+.preview{font-size:13.5px;color:var(--ink-2);margin-top:7px;white-space:pre-line;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.grip{cursor:grab;color:var(--line-2);font-size:15px;padding:4px 2px;user-select:none;letter-spacing:-2px;align-self:start}
+.grip:hover{color:var(--ink)}
+.row.parallel .card{margin-left:22px;background:var(--cb);border-style:dashed;border-left-style:solid}
+.row.parallel .node:before{content:"";position:absolute;left:24px;top:23px;width:22px;border-top:1px dashed var(--c)}
+.row.parallel .t-start{font-size:17px}
+.sublabel{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ci);margin-bottom:2px}
 
-/* parallel */
-.row.parallel{grid-template-columns:100px 36px 1fr}
-.row.parallel .card{margin-left:26px;background:transparent;border-style:dashed}
-.row.parallel .node:after{width:7px;height:7px;left:15px;border-style:solid;background:var(--paper)}
-.row.parallel .node:before{content:"";position:absolute;left:23px;top:24px;width:26px;border-top:1px dashed var(--line-2)}
-.row.parallel .t-start{font-size:18px;color:var(--ink-2)}
-
-/* Lücken */
-.gap{display:grid;grid-template-columns:100px 36px 1fr;padding:0 0 14px;align-items:center}
-.gap .gl{grid-column:3;display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.08em;color:var(--muted);font-style:italic;font-family:var(--serif);font-size:16px}
-.gap .gl:before{content:"";width:22px;border-top:1px dotted var(--line-2)}
-.gap .gl button{font-family:var(--sans);font-style:normal;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:none;border:0;border-bottom:1px solid var(--line-2);padding:0 0 1px;cursor:pointer;color:var(--ink-2)}
-.gap .gl button:hover{color:var(--ink);border-color:var(--ink)}
+.gap{display:grid;grid-template-columns:86px 34px 1fr;padding:0 0 12px}
+.gap .gl{grid-column:3;display:flex;align-items:center;gap:12px;font-family:var(--serif);font-style:italic;font-size:16px;color:var(--muted)}
+.gap button{font-family:var(--sans);font-style:normal;font-size:12.5px;background:none;border:1px dashed var(--line-2);border-radius:999px;padding:3px 11px;cursor:pointer;color:var(--ink-2)}
+.gap button:hover{border-color:var(--ink);color:var(--ink)}
 .gap.conflict .gl{color:var(--err)}
-.gap.conflict .gl:before{border-color:var(--err)}
 
-/* Drag */
 .row.dragging{opacity:.35}
-.row.drop-before:before,.row.drop-after:after{content:"";position:absolute;left:100px;right:0;height:2px;background:var(--ink);z-index:3}
-.row.drop-before:before{top:-8px}
-.row.drop-after:after{bottom:3px}
+.row.drop-before:before,.row.drop-after:after{content:"";position:absolute;left:86px;right:0;height:2px;background:var(--ink);z-index:3}
+.row.drop-before:before{top:-7px}
+.row.drop-after:after{bottom:4px}
 
-/* ---------- Editor ---------- */
-.editor{grid-column:1 / -1;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
-.f{display:flex;flex-direction:column;gap:5px;min-width:0}
-.f.full{grid-column:1 / -1}
-.f > label:not(.chk),.lbl{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
-.inp{width:100%;border:0;border-bottom:1px solid var(--line-2);background:transparent;padding:6px 0;font-size:15px;font-weight:400;border-radius:0}
+/* Editor */
+.editor{grid-column:1 / -1;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.fld{margin-bottom:16px}
+.lbl{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:.04em}
+.inp{width:100%;border:1px solid var(--line-2);background:#fff;border-radius:8px;padding:9px 12px;font-size:15px;font-weight:400}
 .inp:focus{outline:none;border-color:var(--ink)}
-.inp:disabled{color:var(--muted);border-bottom-style:dotted}
-.inp.big{font-family:var(--serif);font-size:24px;font-weight:500}
-textarea.inp{resize:vertical;min-height:70px;border:1px solid var(--line-2);padding:10px;line-height:1.5}
-textarea.inp:focus{border-color:var(--ink)}
-.inline{display:flex;flex-direction:row;align-items:center;gap:10px;flex-wrap:wrap}
-.inline .inp{width:auto;flex:1;min-width:80px}
-.chk{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;user-select:none}
-.chk input{appearance:none;-webkit-appearance:none;width:15px;height:15px;border:1px solid var(--ink);border-radius:2px;margin:0;display:grid;place-content:center;cursor:pointer;flex:none;background:#fff}
-.chk input:checked{background:var(--ink)}
-.chk input:checked:after{content:"";width:7px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
-.hint{font-size:12.5px;color:var(--muted);font-style:italic;font-family:var(--serif);font-size:15px}
-.steps{display:flex;gap:4px}
-.steps button{border:1px solid var(--line-2);background:transparent;border-radius:2px;padding:3px 7px;font-size:11px;cursor:pointer;color:var(--ink-2)}
-.steps button:hover{border-color:var(--ink);color:var(--ink)}
-.section{margin-top:22px}
-.section h4{margin:0 0 8px;font-family:var(--serif);font-weight:500;font-size:19px;display:flex;align-items:baseline;gap:10px}
-.section h4 small{font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:.1em}
-.todo{display:flex;align-items:center;gap:10px;padding:4px 0;border-bottom:1px dashed var(--line)}
-.todo .inp{border:0;padding:4px 0}
-.todo.done .inp{text-decoration:line-through;color:var(--muted)}
-.x{background:none;border:0;cursor:pointer;color:var(--muted);font-size:17px;line-height:1;padding:2px 4px}
+.inp.big{font-family:var(--serif);font-size:22px;font-weight:500;padding:6px 12px}
+textarea.inp{resize:vertical;min-height:80px;line-height:1.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;padding:3px;background:#fff;flex-wrap:wrap}
+.seg button{border:0;background:none;border-radius:999px;padding:6px 14px;font-size:13.5px;cursor:pointer;color:var(--ink-2)}
+.seg button.on{background:var(--ci,var(--ink));color:#fff}
+.hbox{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.hbox input[type=time],.hbox input[type=number]{width:auto;min-width:110px}
+.hbox input[type=number]{width:90px;min-width:0}
+.hint{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink-2)}
+.rnd{width:34px;height:34px;border-radius:50%;border:1px solid var(--line-2);background:#fff;cursor:pointer;font-size:16px;line-height:1}
+.rnd:hover{border-color:var(--ink)}
+.swatches{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:28px;height:28px;border-radius:50%;background:var(--c);border:2px solid #fff;box-shadow:0 0 0 1px var(--line-2);cursor:pointer}
+.sw.on{box-shadow:0 0 0 2px var(--ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:#fff;border-radius:999px;padding:6px 14px;font-size:13.5px;cursor:pointer}
+.chip.on{background:var(--cb);border-color:var(--c);color:var(--ci)}
+.chip.on:before{content:"✓ "}
+.list .item{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.list .item .inp{border:0;padding:5px 0;background:transparent;border-radius:0}
+.list .item.done .inp{text-decoration:line-through;color:var(--muted)}
+.cb{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:1.5px solid var(--ci,var(--ink));border-radius:5px;margin:0;display:grid;place-content:center;cursor:pointer;flex:none;background:#fff}
+.cb:checked{background:var(--ci,var(--ink));border-color:var(--ci,var(--ink))}
+.cb:checked:after{content:"";width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.x{background:none;border:0;cursor:pointer;color:var(--muted);font-size:18px;line-height:1;padding:2px 6px}
 .x:hover{color:var(--err)}
-.comment{padding:10px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:1fr auto;gap:2px 10px}
-.comment .who{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
-.comment .who span{color:var(--muted);letter-spacing:.04em;text-transform:none;margin-left:8px}
+.plus{width:18px;text-align:center;color:var(--muted);flex:none}
+.comment{padding:9px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:1fr auto}
+.comment .who{font-size:12.5px;font-weight:500}
+.comment .who span{color:var(--muted);font-weight:300;margin-left:8px}
 .comment .txt{grid-column:1 / -1;white-space:pre-wrap;font-size:14.5px}
-.newcomment{display:grid;grid-template-columns:160px 1fr auto;gap:10px;align-items:end;margin-top:10px}
-.newcomment textarea{min-height:42px}
-.edfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:24px;padding-top:14px;border-top:1px solid var(--line)}
+.newc{display:grid;grid-template-columns:130px 1fr auto;gap:8px;margin-top:10px}
+.edfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 
-/* ---------- Toast & Fuß ---------- */
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;padding:10px 12px 10px 18px;border-radius:999px;font-size:13px;display:flex;align-items:center;gap:14px;transition:all .25s;z-index:50;box-shadow:0 12px 30px -10px rgba(0,0,0,.4)}
+/* Team-Fragen */
+.team{margin-top:46px;background:linear-gradient(100deg,#f5f2fb 0%,#fff 70%);border-left:4px solid #bdaedb;border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+.team h2{font-family:var(--serif);font-weight:500;font-size:26px;margin:0 0 4px}
+.team p{margin:0 0 10px;color:var(--muted);font-size:13.5px}
+.team .list .item .cb{--ci:var(--ink)}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;padding:10px 12px 10px 18px;border-radius:999px;font-size:13.5px;display:flex;align-items:center;gap:14px;transition:all .25s;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%);pointer-events:auto}
-.toast button{background:#fff;color:var(--ink);border:0;border-radius:999px;padding:5px 12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
-footer{text-align:center;margin-top:50px;color:var(--muted);font-size:12px}
-footer .ornament{margin-bottom:18px}
-.empty{text-align:center;padding:40px;color:var(--muted);font-family:var(--serif);font-style:italic;font-size:20px}
+.toast button{background:#fff;color:var(--ink);border:0;border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+footer{text-align:center;margin-top:40px;color:var(--muted);font-size:12.5px}
 
-@media (max-width:900px){
-  .toolbar .wrap{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px}
-  .toolbar .wrap::-webkit-scrollbar{display:none}
-  .toolbar .spacer{display:none}
-}
 @media (max-width:640px){
-  body{padding:0 16px 80px}
-  header.hero{padding-top:40px}
-  .summary{grid-template-columns:1fr 1fr}
-  .summary > div:nth-child(2){border-right:0}
-  .summary > div:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  ol.timeline:before{left:70px}
-  .row,.gap,.row.parallel{grid-template-columns:58px 26px 1fr}
-  .node:after{left:8px}
-  .row.parallel .node:after{left:9px}
-  .row.parallel .card{margin-left:12px}
-  .row.parallel .node:before{left:17px;width:12px}
-  .t-start{font-size:19px}
+  body{padding:0 16px 90px}
+  header.hero{padding-top:36px}
+  ol.timeline:before{left:65px}
+  .row,.gap{grid-template-columns:54px 24px 1fr}
+  .node:after{left:6px}
+  .row.parallel .card{margin-left:10px}
+  .row.parallel .node:before{left:18px;width:12px}
+  .t-start{font-size:18px}
   .row.parallel .t-start{font-size:15px}
   .t-end{font-size:11px}
-  .fgrid{grid-template-columns:1fr}
-  .newcomment{grid-template-columns:1fr}
-  .row.drop-before:before,.row.drop-after:after{left:58px}
-  .btn{padding:6px 11px;font-size:11px}
+  .two,.newc{grid-template-columns:1fr}
+  .btn{padding:7px 12px}
+  .hide-sm{display:none}
+  .row.drop-before:before,.row.drop-after:after{left:54px}
 }
 @media print{
   body{background:#fff;padding:0}
-  .toolbar,.checks,.gap button,.grip,.edfoot,.newcomment,.toast,.x,.noprint{display:none!important}
+  .toolbar,.issues,.gap button,.grip,.edfoot,.newc,.toast,.x,footer{display:none!important}
   .row{break-inside:avoid}
-  .card{border-color:#ccc}
-  .summary{margin-top:10px}
-  header.hero{padding-top:10px}
-  [contenteditable]:hover{background:none}
 }
 </style>
 </head>
 <body>
 
 <header class="hero wrap">
-  <div class="eyebrow">Ablauf &amp; Zeitplan</div>
-  <h1 contenteditable="true" data-meta="title" data-ph="Titel">Unser Hochzeitstag</h1>
-  <div class="sub" contenteditable="true" data-meta="couple" data-ph="Namen des Paares">Braut &amp; Bräutigam</div>
-  <div class="date" contenteditable="true" data-meta="date" data-ph="Datum &amp; Ort">Datum · Ort</div>
-  <div class="ornament"><span>&amp;</span></div>
+  <div class="eyebrow">Ablaufplan</div>
+  <h1 contenteditable="true" data-meta="title"></h1>
+  <div class="sub" contenteditable="true" data-meta="subtitle"></div>
+  <div class="dots"><i data-c="rose"></i><i data-c="apricot"></i><i data-c="butter"></i><i data-c="sage"></i><i data-c="sky"></i><i data-c="lavender"></i></div>
+  <div class="overview" id="overview"></div>
 </header>
 
 <nav class="toolbar">
   <div class="wrap">
-    <button class="btn primary" id="addBtn">+ Programmpunkt</button>
-    <button class="btn ghost" id="undoBtn" title="Rückgängig (⌘/Strg + Z)">↶ Zurück</button>
-    <button class="btn ghost" id="redoBtn" title="Wiederholen (⌘/Strg + Shift + Z)">↷ Vor</button>
+    <button class="btn primary" id="addBtn">+ Neuer Punkt</button>
+    <button class="btn icon" id="undoBtn" title="Rückgängig (⌘Z)">↶<span class="hide-sm">&nbsp;Rückgängig</span></button>
     <span class="spacer"></span>
-    <button class="btn ghost" id="expandBtn">Details zeigen</button>
-    <button class="btn" id="exportBtn">Sichern</button>
-    <button class="btn" id="importBtn">Laden</button>
-    <button class="btn" id="mdBtn" title="Als Markdown in die Zwischenablage (für Obsidian)">Kopieren</button>
-    <button class="btn" id="printBtn">Drucken</button>
+    <button class="pill ok" id="statusBtn"></button>
+    <button class="btn icon" id="menuBtn" title="Mehr">•••</button>
+    <div class="menu" id="menu" hidden>
+      <button data-menu="export">Als Datei sichern</button>
+      <button data-menu="import">Datei laden</button>
+      <button data-menu="copy">Als Text kopieren</button>
+      <button data-menu="print">Drucken</button>
+      <hr>
+      <button data-menu="reset" class="danger">Alles auf Anfang zurücksetzen</button>
+    </div>
     <input type="file" id="fileIn" accept="application/json,.json" hidden>
   </div>
+  <div class="wrap"><div class="issues" id="issues" hidden></div></div>
 </nav>
 
 <main class="wrap">
-  <section class="summary" id="summary"></section>
-  <details class="checks" id="checks"></details>
   <ol class="timeline" id="timeline"></ol>
+  <section class="team" id="team"></section>
 </main>
 
 <footer class="wrap">
-  <div class="ornament"><span>&amp;</span></div>
-  <div>Änderungen werden automatisch in diesem Browser gespeichert. „Sichern“ legt zusätzlich eine Datei ab.</div>
-  <div style="margin-top:14px"><button class="btn danger" id="resetBtn">Auf Zettel-Stand zurücksetzen</button></div>
+  Wird automatisch in diesem Browser gespeichert. Zum Teilen im Team: ••• → „Als Datei sichern“ und bei den anderen „Datei laden“.
 </footer>
 
 <div class="toast" id="toast"><span id="toastMsg"></span><button id="toastBtn">Rückgängig</button></div>
@@ -249,272 +235,211 @@ footer .ornament{margin-bottom:18px}
 <script>
 (() => {
 'use strict';
-const KEY = 'hochzeit-zeitplan-v1';
+const SEED = {"meta": {"title": "Hochzeit", "subtitle": "Ablauf fürs Planungsteam · 17.10.2026"}, "author": "", "items": [{"title": "Frühstück", "color": "butter", "fixed": true, "time": "07:00", "dur": 30, "tentative": true, "details": "Uhrzeit steht nicht auf dem Zettel – bitte festlegen.", "id": "p1", "todos": []}, {"title": "Get Ready", "color": "sky", "fixed": true, "time": "07:30", "auto": true, "id": "p2", "todos": []}, {"title": "First Look", "color": "rose", "fixed": true, "time": "11:45", "dur": 20, "tentative": true, "id": "p3", "todos": []}, {"title": "Fotoshoot", "color": "rose", "auto": true, "details": "Paar-Shooting direkt nach dem First Look.", "id": "p4", "todos": []}, {"title": "Einlauf der Braut", "color": "butter", "fixed": true, "time": "12:55", "dur": 5, "id": "p5", "todos": []}, {"title": "Trauung", "color": "sage", "fixed": true, "time": "13:00", "auto": true, "location": "Kirche", "details": "Musik: nur Chor und Klavier, kein Orchester.", "id": "p6", "todos": []}, {"title": "Kuchen", "color": "apricot", "fixed": true, "time": "14:00", "auto": true, "id": "p7", "todos": []}, {"title": "Abfahrt Schloss", "color": "butter", "fixed": true, "time": "15:00", "dur": 30, "id": "p8", "todos": []}, {"title": "Fotoshoot", "color": "rose", "fixed": true, "time": "16:00", "auto": true, "location": "Schloss", "id": "p9", "todos": []}, {"title": "Chaoskarten verteilen", "color": "butter", "parallel": true, "auto": true, "details": "Während das Paar beim Shooting ist.", "todos": [{"id": "t11", "text": "Chaoskarten gekauft und individualisiert", "done": true}], "id": "p10"}, {"title": "Empfang Schloss", "color": "sky", "fixed": true, "time": "16:30", "auto": true, "location": "Schloss", "details": "Rückkehr vom Shooting: Begrüßung und Jubel.\nIdee: Fanfare zur Anfahrt, Verlesen wie im Adel.", "todos": [{"id": "t13", "text": "Jubel / Begrüßung festlegen", "done": false}, {"id": "t14", "text": "Fanfare organisieren?", "done": false}], "id": "p12"}, {"title": "Puzzlespiel", "color": "sky", "parallel": true, "auto": true, "details": "Statt Fotobox: Alle bekommen ein Puzzleteil, suchen die passenden Personen und kommen ins Gespräch. Der Fotograf macht das Gruppenfoto.", "todos": [{"id": "t16", "text": "Puzzlestücke passend zur Gästezahl", "done": false}, {"id": "t17", "text": "Fotograf briefen", "done": false}], "id": "p15"}, {"title": "Kleine Rede mit Vorstellung", "color": "apricot", "fixed": true, "time": "17:00", "dur": 20, "tentative": true, "id": "p18", "todos": []}, {"title": "Nebenher den ganzen Abend", "color": "lavender", "parallel": true, "dur": 570, "details": "Kreatives Gästebuch: große Leinwand, jede*r malt einen Strich in Grüntönen.\nAudio-Gästebuch: QR-Codes auf den Tischen (gebucht).\nFotoaufgaben auf den Stühlen, Puzzle-Personen fotografieren.\nChaoskarten, Spieltisch, Gäste-Collage.", "todos": [{"id": "t20", "text": "Leinwand + Staffelei", "done": false}, {"id": "t21", "text": "Audio-Gästebuch gebucht", "done": true}, {"id": "t22", "text": "Fotoaufgaben auf die Stühle", "done": false}, {"id": "t23", "text": "Spieltisch aufbauen", "done": false}], "id": "p19"}, {"title": "Ideen – noch offen", "color": "lavender", "parallel": true, "dur": 570, "tentative": true, "details": "Tattoo-Station: Motive vom Paar, schön und lustig.\n10 Gläser: ein Glas pro Hochzeitstag bis zum 10., Gäste schreiben Wünsche, Witze, Gedanken.\nFotoecke mit Kinderbildern: Anfrage beim Paar läuft.", "todos": [{"id": "t25", "text": "Tattoo-Station: Kosten klären", "done": false}, {"id": "t26", "text": "10 Gläser + Zettel + Stifte", "done": false}, {"id": "t27", "text": "Fotoecke: Antwort vom Paar abwarten", "done": false}], "id": "p24"}, {"title": "Flugbegleiter-Einführung", "color": "lavender", "fixed": true, "time": "18:45", "dur": 15, "tentative": true, "details": "Wenn alle sitzen, vor dem Essen.", "id": "p28", "todos": []}, {"title": "Vorspeise", "color": "sage", "fixed": true, "time": "19:00", "dur": 40, "tentative": true, "details": "Kein Programm während des Essens – nur zwischen den Gängen.", "id": "p29", "todos": []}, {"title": "Sandmalerei", "color": "lavender", "dur": 15, "tentative": true, "details": "Zwischen Vorspeise und Hauptgang (alternativ nach dem Dessert).", "id": "p30", "todos": []}, {"title": "Hauptgang", "color": "sage", "dur": 60, "tentative": true, "id": "p31", "todos": []}, {"title": "Video-Quiz", "color": "lavender", "dur": 20, "details": "Max. 20 Minuten. Rote Linie: die Geschichte der Kiste.\nVorgaben allgemein: Format, Länge. Pro Szene drei Antwortmöglichkeiten.", "todos": [{"id": "t33", "text": "Vorgaben an alle Mitwirkenden", "done": false}, {"id": "t34", "text": "Schatzkiste für den 1. Hochzeitstag bauen", "done": false}, {"id": "t35", "text": "Aufruf an Gäste: Mitbringsel für die Schatzkiste", "done": false}], "id": "p32"}, {"title": "Dessert", "color": "sage", "dur": 30, "tentative": true, "id": "p36", "todos": []}, {"title": "Party", "color": "apricot", "auto": true, "tentative": true, "details": "Steht nicht auf dem Zettel – Platzhalter bis zum Schluss.\nHochprozentiges kommt vom Schloss.", "id": "p37", "todos": []}, {"title": "Schluss", "color": "rose", "fixed": true, "time": "02:30", "dur": 0, "id": "p38", "todos": []}], "questions": [{"id": "q0", "text": "Kirche: Gäste informieren, dass sie ihr Zimmer in der Location erst später beziehen?", "done": false}, {"id": "q1", "text": "Begrüßung nach dem Shooting: Wie jubeln wir? Fanfare?", "done": false}, {"id": "q2", "text": "Partystimmung: Jede*r bekommt etwas in die Hand – aber was?", "done": false}, {"id": "q3", "text": "Welche Nebenprogramm-Ideen setzen wir um, und wer besorgt was?", "done": false}, {"id": "q4", "text": "Ablaufplan: Wer baut ihn? → dieser Plan", "done": true}]};
+const KEY = 'hochzeit-ablauf-v2';
+const COLORS = [['rose','Rosé'],['apricot','Apricot'],['butter','Champagner'],['sage','Salbei'],['sky','Taubenblau'],['lavender','Lavendel'],['stone','Neutral']];
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = s => document.querySelector(s);
 
-/* ---------- Ausgangsstand (vom Zettel) ---------- */
-function seed(){
-  const it = (o) => Object.assign({id:uid(), title:'', fixed:false, time:'', dur:30, auto:false, parallel:false, tentative:false, location:'', person:'', details:'', todos:[], comments:[]}, o);
-  const td = t => ({id:uid(), text:t, done:false});
-  return {
-    meta:{title:'Unser Hochzeitstag', couple:'Braut & Bräutigam', date:'Datum · Ort'},
-    author:'',
-    items:[
-      it({title:'Frühstück', fixed:true, time:'07:00', dur:30, tentative:true, details:'Uhrzeit steht nicht auf dem Zettel – bitte festlegen.'}),
-      it({title:'Get Ready', fixed:true, time:'07:30', auto:true}),
-      it({title:'First Look', fixed:true, time:'11:45', dur:20, tentative:true}),
-      it({title:'Fotoshoot', auto:true, details:'Paar-Shooting direkt nach dem First Look.'}),
-      it({title:'Einlauf der Braut', fixed:true, time:'12:55', dur:5}),
-      it({title:'Trauung', fixed:true, time:'13:00', auto:true}),
-      it({title:'Kuchen', fixed:true, time:'14:00', auto:true}),
-      it({title:'Abfahrt Schloss', fixed:true, time:'15:00', dur:30, details:'Zettel: 15:00 – 15:30 Uhr'}),
-      it({title:'Fotoshoot', fixed:true, time:'16:00', auto:true}),
-      it({title:'Empfang Schloss', fixed:true, time:'16:30', auto:true}),
-      it({title:'Kleine Rede mit Vorstellung', fixed:true, time:'17:00', dur:20, tentative:true}),
-      it({title:'Parallel-Aktion', parallel:true, auto:true, todos:[td('Puzzlestücke'), td('Leinwand?')]}),
-      it({title:'Dinner', fixed:true, time:'19:00', dur:120, tentative:true}),
-      it({title:'Parallel-Aktionen', parallel:true, auto:true, todos:[td('Leinwand'), td('Spieltisch')]}),
-      it({title:'Schluss', fixed:true, time:'02:30', dur:0}),
-    ]
-  };
+/* ---------- Zustand ---------- */
+function blank(o = {}){ return Object.assign({id:uid(), title:'', color:'sage', fixed:false, time:'', dur:30, auto:false, parallel:false, tentative:false, location:'', person:'', details:'', todos:[], comments:[]}, o); }
+function normalize(s){
+  s.meta = Object.assign({title:'Hochzeit', subtitle:'Planungsteam'}, s.meta || {});
+  s.items = (s.items || []).map(x => blank(x));
+  s.questions = s.questions || [];
+  s.author = s.author || '';
+  return s;
 }
-
-/* ---------- Zustand, Speicher, Verlauf ---------- */
+const fresh = () => normalize(JSON.parse(JSON.stringify(SEED || {items:[]})));
 let state;
 try { state = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
-if (!state || !Array.isArray(state.items)) state = seed();
-let openId = null, expandAll = false;
-const past = [], future = [];
-let focusSnap = null;
+state = state && Array.isArray(state.items) ? normalize(state) : fresh();
 
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
-function snap(){ return JSON.stringify(state); }
-function pushHistory(s){ past.push(s ?? snap()); if (past.length > 80) past.shift(); future.length = 0; }
-function commit(fn, opts={}){ pushHistory(); fn(); save(); render(); if (opts.toast) toast(opts.toast, true); }
-function undo(){ if (!past.length) return; future.push(snap()); state = JSON.parse(past.pop()); save(); render(); }
-function redo(){ if (!future.length) return; past.push(snap()); state = JSON.parse(future.pop()); save(); render(); }
+let openId = null, issuesOpen = false, focusSnap = null;
+const past = [];
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+const snap = () => JSON.stringify(state);
+const pushHistory = s => { past.push(s ?? snap()); if (past.length > 80) past.shift(); };
+function commit(fn, msg){ pushHistory(); fn(); save(); render(); if (msg) toast(msg, true); }
+function undo(){ if (!past.length) return; state = JSON.parse(past.pop()); save(); render(); }
 
 /* ---------- Zeitrechnung ---------- */
-const toMin = hm => { const m = /^(\d{1,2}):(\d{2})$/.exec(hm || ''); return m ? (+m[1]) * 60 + (+m[2]) : null; };
-function resolve(hm, ref){ let m = toMin(hm); if (m == null) return null; if (ref == null) return m; while (m < ref - 360) m += 1440; return m; }
+const toMin = hm => { const m = /^(\d{1,2}):(\d{2})$/.exec(hm || ''); return m ? +m[1] * 60 + +m[2] : null; };
+function resolve(hm, ref){ let m = toMin(hm); if (m == null || ref == null) return m; while (m < ref - 360) m += 1440; return m; }
 const pad = n => String(n).padStart(2, '0');
-function hhmm(m){ if (m == null) return '–'; const d = ((m % 1440) + 1440) % 1440; return pad(Math.floor(d/60)) + ':' + pad(d % 60); }
-function fmtT(m){ if (m == null) return '–'; return hhmm(m) + (m >= 1440 ? '<span class="plus1" title="Folgetag">+1</span>' : ''); }
-function fmtDur(d){ if (d == null) return '–'; if (d === 0) return '0 Min.'; const h = Math.floor(Math.abs(d)/60), m = Math.abs(d) % 60; return (h ? h + ' Std.' : '') + (h && m ? ' ' : '') + (m ? m + ' Min.' : ''); }
+const hhmm = m => m == null ? '–' : (d => pad(Math.floor(d / 60)) + ':' + pad(d % 60))(((m % 1440) + 1440) % 1440);
+const fmtT = m => m == null ? '–' : hhmm(m) + (m >= 1440 ? '<span class="plus1" title="Folgetag">+1</span>' : '');
+function fmtDur(d){ if (d == null) return '–'; if (d <= 0) return '0 Min.'; const h = Math.floor(d / 60), m = d % 60; return [h && h + ' Std.', m && m + ' Min.'].filter(Boolean).join(' '); }
+const T = x => x.title || 'Ohne Titel';
 
 function compute(){
   const items = state.items, res = {}, issues = [];
   const add = (level, id, text) => issues.push({level, id, text});
-  // Hauptpunkte
-  let prevEnd = null, prevMain = null;
-  const mainIdx = items.map((x,i) => x.parallel ? -1 : i).filter(i => i >= 0);
+  const mainIdx = items.map((x, i) => x.parallel ? -1 : i).filter(i => i >= 0);
+  let prevEnd = null, prev = null;
   items.forEach((x, i) => {
     if (x.parallel) return;
-    const r = res[x.id] = {start:null, end:null, gap:0, prevTitle: prevMain?.title};
+    const r = res[x.id] = {gap:0};
     if (x.fixed && toMin(x.time) != null){
       r.start = resolve(x.time, prevEnd);
-      if (prevEnd != null){
-        r.gap = r.start - prevEnd;
-        if (r.gap < 0) add('err', x.id, `„${x.title || 'Ohne Titel'}“ beginnt ${fmtDur(-r.gap)} bevor „${prevMain.title || 'Ohne Titel'}“ endet`);
-      }
-    } else {
-      if (x.fixed) add('warn', x.id, `„${x.title || 'Ohne Titel'}“ ist als fest markiert, hat aber keine Uhrzeit`);
-      if (prevEnd == null){ r.start = 8*60; add('err', x.id, `Der erste Punkt braucht eine feste Uhrzeit – angenommen 08:00`); }
-      else r.start = prevEnd;
-    }
-    let dur = x.dur;
+      if (prevEnd != null){ r.gap = r.start - prevEnd; if (r.gap < 0) add('err', x.id, `„${T(x)}“ beginnt ${fmtDur(-r.gap)} bevor „${T(prev)}“ endet`); }
+    } else if (prevEnd == null){ r.start = 8 * 60; add('err', x.id, `Der erste Punkt braucht eine feste Uhrzeit`); }
+    else r.start = prevEnd;
+    let dur = +x.dur || 0;
     if (x.auto){
-      const nextI = mainIdx.find(j => j > i);
-      const nx = nextI != null ? items[nextI] : null;
-      if (nx && nx.fixed && toMin(nx.time) != null){ dur = resolve(nx.time, r.start) - r.start; r.autoTo = nx.title; }
-      else { dur = 0; add('warn', x.id, `„${x.title || 'Ohne Titel'}“ läuft „bis zum nächsten Punkt“, aber der nächste Punkt hat keine feste Uhrzeit`); }
-    } else if (dur == null || isNaN(dur)){ dur = 0; add('warn', x.id, `„${x.title || 'Ohne Titel'}“ hat keine Dauer`); }
-    r.dur = dur; r.end = r.start + dur;
-    if (r.gap > 0) r.gapNote = true;
-    prevEnd = r.end; prevMain = x;
+      const nx = items[mainIdx.find(j => j > i)];
+      if (nx && nx.fixed && toMin(nx.time) != null){ dur = resolve(nx.time, r.start) - r.start; r.autoTo = T(nx); }
+      else { dur = 0; add('warn', x.id, `„${T(x)}“ läuft bis zum nächsten Punkt – der hat aber keine feste Uhrzeit`); }
+    }
+    if (dur < 0) add('err', x.id, `„${T(x)}“ endet, bevor es beginnt`);
+    r.dur = dur; r.end = r.start + dur; prevEnd = r.end; prev = x;
   });
-  // Parallele Punkte
   let parent = null;
   items.forEach((x, i) => {
     if (!x.parallel){ parent = x; return; }
-    const r = res[x.id] = {start:null, end:null, gap:0};
-    if (!parent){ add('err', x.id, `„${x.title || 'Ohne Titel'}“ ist parallel, steht aber ganz oben – es gibt keinen Punkt, zu dem es parallel läuft`); r.start = 8*60; }
-    else { r.parent = parent.title; r.start = (x.fixed && toMin(x.time) != null) ? resolve(x.time, res[parent.id].start) : res[parent.id].start; }
-    const nextMain = items.slice(i+1).find(y => !y.parallel);
-    const nextStart = nextMain ? res[nextMain.id].start : null;
-    let dur = x.dur;
-    if (x.auto){ if (nextStart != null){ dur = nextStart - r.start; r.autoTo = nextMain.title; } else { dur = 0; add('warn', x.id, `„${x.title || 'Ohne Titel'}“ läuft „bis zum nächsten Punkt“, danach kommt aber nichts mehr`); } }
-    else if (dur == null || isNaN(dur)){ dur = 0; add('warn', x.id, `„${x.title || 'Ohne Titel'}“ hat keine Dauer`); }
+    const r = res[x.id] = {gap:0};
+    if (!parent){ r.start = 8 * 60; add('err', x.id, `„${T(x)}“ ist „nebenher“, steht aber ganz oben`); }
+    else { r.parent = T(parent); r.start = x.fixed && toMin(x.time) != null ? resolve(x.time, res[parent.id].start) : res[parent.id].start; }
+    let dur = +x.dur || 0;
+    if (x.auto){
+      const nx = items.slice(i + 1).find(y => !y.parallel);
+      if (nx){ dur = res[nx.id].start - r.start; r.autoTo = T(nx); } else dur = 0;
+    }
     r.dur = dur; r.end = r.start + dur;
-    if (nextStart != null && r.end > nextStart && !x.auto) add('warn', x.id, `„${x.title || 'Ohne Titel'}“ läuft ${fmtDur(r.end - nextStart)} in „${nextMain.title || 'Ohne Titel'}“ hinein`);
   });
-  items.forEach(x => {
-    if (res[x.id] && res[x.id].dur < 0) add('err', x.id, `„${x.title || 'Ohne Titel'}“ hat eine negative Dauer`);
-    if (!x.title.trim()) add('warn', x.id, 'Ein Programmpunkt hat noch keinen Titel');
-    if (x.tentative) add('info', x.id, `„${x.title || 'Ohne Titel'}“ ist noch vorläufig`);
-    const open = x.todos.filter(t => !t.done).length;
-    if (open) add('info', x.id, `„${x.title || 'Ohne Titel'}“: ${open} offene${open === 1 ? 'r' : ''} Punkt${open === 1 ? '' : 'e'}`);
-  });
-  // Lücken als Info
-  items.forEach(x => { const r = res[x.id]; if (!x.parallel && r.gap > 0) add('info', x.id, `${fmtDur(r.gap)} frei vor „${x.title || 'Ohne Titel'}“`); });
+  items.forEach(x => { if (!x.title.trim()) add('warn', x.id, 'Ein Punkt hat noch keinen Titel'); });
   const mains = items.filter(x => !x.parallel);
-  const first = mains[0] ? res[mains[0].id].start : null;
-  const last = mains.length ? Math.max(...items.map(x => res[x.id].end)) : null;
+  const first = mains.length ? res[mains[0].id].start : null;
+  const last = mains.length ? res[mains[mains.length - 1].id].end : null;
   return {res, issues, first, last};
 }
 
 /* ---------- Darstellung ---------- */
-const $ = s => document.querySelector(s);
 const tl = $('#timeline');
-
 function render(){
-  const ae = document.activeElement, fk = ae?.dataset?.k, sel = (ae && 'selectionStart' in ae) ? [ae.selectionStart, ae.selectionEnd] : null;
+  const ae = document.activeElement, fk = ae?.dataset?.k, sel = ae && 'selectionStart' in ae ? [ae.selectionStart, ae.selectionEnd] : null;
   const {res, issues, first, last} = compute();
-  const errs = issues.filter(i => i.level === 'err'), warns = issues.filter(i => i.level === 'warn');
+  const errs = issues.filter(i => i.level === 'err').length, warns = issues.length - errs;
 
-  // Kopf
-  document.querySelectorAll('[data-meta]').forEach(el => { if (el !== document.activeElement) el.textContent = state.meta[el.dataset.meta] ?? ''; });
-  document.title = (state.meta.title || 'Hochzeitstag') + ' · Zeitplan';
+  document.querySelectorAll('[data-meta]').forEach(el => { if (el !== ae) el.textContent = state.meta[el.dataset.meta] || ''; });
+  document.title = (state.meta.title || 'Hochzeit') + ' · Ablaufplan';
+  $('#overview').innerHTML = first != null
+    ? `<b>${fmtT(first)} – ${fmtT(last)} Uhr</b> · ${fmtDur(last - first)} · ${state.items.length} Punkte`
+    : '';
 
-  // Übersicht
-  const statusTxt = errs.length ? `${errs.length} Konflikt${errs.length > 1 ? 'e' : ''}` : warns.length ? `${warns.length} Hinweis${warns.length > 1 ? 'e' : ''}` : 'Stimmig';
-  $('#summary').innerHTML = `
-    <div><div class="k">Beginn</div><div class="v">${fmtT(first)}</div></div>
-    <div><div class="k">Ende</div><div class="v">${fmtT(last)}</div></div>
-    <div><div class="k">Dauer</div><div class="v">${first != null && last != null ? fmtDur(last - first).replace(' Min.', '<small> Min.</small>').replace(' Std.', '<small> Std.</small>') : '–'}</div></div>
-    <div><div class="k">Prüfung</div><div class="v" style="color:${errs.length ? 'var(--err)' : warns.length ? 'var(--warn)' : 'var(--ok)'}">${statusTxt}</div></div>`;
+  const sb = $('#statusBtn');
+  sb.className = 'pill ' + (errs ? 'err' : warns ? 'warn' : 'ok');
+  sb.innerHTML = errs ? `● ${errs} Konflikt${errs > 1 ? 'e' : ''}` : warns ? `● ${warns} Hinweis${warns > 1 ? 'e' : ''}` : '✓ Zeiten passen';
+  sb.disabled = !issues.length;
+  if (!issues.length) issuesOpen = false;
+  $('#issues').hidden = !issuesOpen;
+  $('#issues').innerHTML = '<ul>' + issues.map(i => `<li data-jump="${i.id}"><span class="lv ${i.level}"></span><span>${esc(i.text)}</span></li>`).join('') + '</ul>';
 
-  const wasOpen = $('#checks').open;
-  const order = {err:0, warn:1, info:2}, label = {err:'Konflikt', warn:'Hinweis', info:'Info'};
-  const sorted = issues.slice().sort((a,b) => order[a.level] - order[b.level]);
-  $('#checks').innerHTML = `<summary><span class="status-dot ${errs.length ? 'err' : warns.length ? 'warn' : ''}"></span>
-    ${errs.length || warns.length ? 'Prüfung: ' + [errs.length && errs.length + ' Konflikt' + (errs.length > 1 ? 'e' : ''), warns.length && warns.length + ' Hinweis' + (warns.length > 1 ? 'e' : '')].filter(Boolean).join(' · ') : 'Alle Zeiten greifen sauber ineinander'}
-    <span style="color:var(--muted);letter-spacing:.08em;text-transform:none">· ${issues.filter(i => i.level === 'info').length} Infos</span><span class="chev">⌄</span></summary>
-    <ul>${sorted.map(i => `<li data-jump="${i.id}"><span class="tag ${i.level}">${label[i.level]}</span><span class="ct">${esc(i.text)}</span></li>`).join('') || '<li style="cursor:default">Nichts zu beanstanden.</li>'}</ul>`;
-  $('#checks').open = wasOpen || errs.length > 0 && !$('#checks').dataset.touched;
-
-  // Zeitleiste
-  if (!state.items.length){ tl.innerHTML = '<li class="empty">Noch keine Programmpunkte. Leg den ersten an.</li>'; return; }
   let html = '';
   state.items.forEach((x, i) => {
     const r = res[x.id];
-    const myIssues = issues.filter(s => s.id === x.id && s.level !== 'info');
-    const hasErr = myIssues.some(s => s.level === 'err');
-    if (!x.parallel && i > 0 && r.gap !== 0){
+    const my = issues.filter(s => s.id === x.id);
+    if (!x.parallel && i > 0 && r.gap){
       html += r.gap > 0
-        ? `<li class="gap"><div class="gl">${fmtDur(r.gap)} frei <button data-act="fillgap" data-id="${x.id}" data-gap="${r.gap}">+ hier einfügen</button></div></li>`
+        ? `<li class="gap"><div class="gl">${fmtDur(r.gap)} frei <button data-act="fillgap" data-id="${x.id}" data-gap="${r.gap}">+ Punkt einfügen</button></div></li>`
         : `<li class="gap conflict"><div class="gl">Überschneidung · ${fmtDur(-r.gap)}</div></li>`;
     }
-    const open = expandAll || openId === x.id;
+    const open = openId === x.id;
     const doneN = x.todos.filter(t => t.done).length;
-    const metaBits = [];
-    metaBits.push(`<span>${fmtDur(r.dur)}${x.auto ? ' · bis ' + esc(r.autoTo || 'nächster Punkt') : ''}</span>`);
-    if (x.parallel && r.parent) metaBits.push(`<span>parallel zu ${esc(r.parent)}</span>`);
-    if (x.location) metaBits.push(`<span>◦ ${esc(x.location)}</span>`);
-    if (x.person) metaBits.push(`<span>◦ ${esc(x.person)}</span>`);
-    html += `<li class="row${x.fixed ? ' fixed' : ''}${x.parallel ? ' parallel' : ''}${openId === x.id ? ' open' : ''}${hasErr ? ' has-err' : ''}" data-id="${x.id}">
-      <div class="time">
-        <span class="t-start">${fmtT(r.start)}</span>
-        <span class="t-end">bis ${fmtT(r.end)}</span>
-        ${x.fixed ? '<span class="t-flag">fest</span>' : '<span class="t-flag calc">errechnet</span>'}
-      </div>
+    const meta = [`<span>${fmtDur(r.dur)}</span>`];
+    if (x.location) meta.push(`<span>${esc(x.location)}</span>`);
+    if (x.person) meta.push(`<span>${esc(x.person)}</span>`);
+    html += `<li class="row${x.fixed ? ' fixed' : ''}${x.parallel ? ' parallel' : ''}${open ? ' open' : ''}${my.some(s => s.level === 'err') ? ' has-err' : ''}" data-id="${x.id}" data-c="${esc(x.color)}">
+      <div class="time" title="${x.fixed ? 'Feste Uhrzeit' : 'Schließt automatisch an'}"><span class="t-start">${fmtT(r.start)}</span><span class="t-end">bis ${fmtT(r.end)}</span></div>
       <div class="node"></div>
       <article class="card">
-        <div class="grip" title="Ziehen zum Verschieben" data-grip>⋮⋮</div>
         <div class="head" data-act="toggle" data-id="${x.id}">
+          ${x.parallel ? `<div class="sublabel">Nebenher${r.parent ? ' · ab ' + esc(r.parent) : ''}</div>` : ''}
           <h3 class="title">${esc(x.title) || '<span style="color:var(--muted)">Ohne Titel</span>'}</h3>
-          <div class="meta">${metaBits.join('')}</div>
+          <div class="meta">${meta.join('')}</div>
           <div class="badges">
-            ${x.parallel ? '<span class="badge">parallel</span>' : ''}
             ${x.tentative ? '<span class="badge warn">vorläufig</span>' : ''}
-            ${myIssues.map(s => `<span class="badge ${s.level}">${s.level === 'err' ? 'Konflikt' : 'Hinweis'}</span>`).join('')}
-            ${x.todos.length ? `<span class="badge">${doneN}/${x.todos.length} erledigt</span>` : ''}
-            ${x.comments.length ? `<span class="badge">${x.comments.length} Kommentar${x.comments.length > 1 ? 'e' : ''}</span>` : ''}
+            ${my.map(s => `<span class="badge ${s.level}">${s.level === 'err' ? 'Konflikt' : 'Hinweis'}</span>`).join('')}
+            ${x.todos.length ? `<span class="badge">☑ ${doneN}/${x.todos.length}</span>` : ''}
+            ${x.comments.length ? `<span class="badge">💬 ${x.comments.length}</span>` : ''}
           </div>
           ${!open && x.details ? `<div class="preview">${esc(x.details)}</div>` : ''}
-          ${!open && x.todos.length ? `<ul class="todos-preview">${x.todos.map(t => `<li class="${t.done ? 'done' : ''}">${esc(t.text)}</li>`).join('')}</ul>` : ''}
         </div>
+        <div class="grip" data-grip title="Ziehen zum Verschieben">⋮⋮</div>
         ${open ? editor(x, r, i) : ''}
       </article>
     </li>`;
   });
-  tl.innerHTML = html;
+  tl.innerHTML = html || '<li style="text-align:center;padding:40px;color:var(--muted)">Noch leer. Oben auf „+ Neuer Punkt“.</li>';
 
-  if (fk){ const el = document.querySelector(`[data-k="${CSS.escape(fk)}"]`); if (el){ el.focus({preventScroll:true}); if (sel && 'setSelectionRange' in el) try { el.setSelectionRange(sel[0], sel[1]); } catch(e){} } }
-  $('#undoBtn').disabled = !past.length; $('#redoBtn').disabled = !future.length;
-  $('#expandBtn').textContent = expandAll ? 'Details einklappen' : 'Details zeigen';
+  const qOpen = state.questions.filter(q => !q.done).length;
+  $('#team').innerHTML = `<h2>Offene Fragen im Team</h2><p>${qOpen ? qOpen + ' offen' : 'Alles geklärt'} · abhaken, ergänzen, löschen</p>
+    <div class="list">${state.questions.map(q => `<div class="item${q.done ? ' done' : ''}">
+      <input type="checkbox" class="cb" data-act="q-done" data-q="${q.id}" ${q.done ? 'checked' : ''}>
+      <input class="inp" data-k="q:${q.id}" data-qtext="${q.id}" value="${esc(q.text)}">
+      <button class="x" data-act="q-del" data-q="${q.id}" title="Löschen">×</button></div>`).join('')}
+      <div class="item"><span class="plus">+</span><input class="inp" data-k="q:new" data-qnew placeholder="Neue Frage – Enter"></div></div>`;
+
+  if (fk){ const el = document.querySelector(`[data-k="${CSS.escape(fk)}"]`); if (el){ el.focus({preventScroll:true}); if (sel && el.setSelectionRange) try { el.setSelectionRange(...sel); } catch(e){} } }
+  $('#undoBtn').disabled = !past.length;
 }
 
 function editor(x, r, i){
-  const k = f => `data-k="${x.id}:${f}" data-f="${f}" data-id="${x.id}"`;
+  const id = x.id, k = f => `data-k="${id}:${f}" data-f="${f}" data-id="${id}"`;
+  const seg = (f, opts) => `<div class="seg">${opts.map(([v, l]) => `<button data-act="set" data-id="${id}" data-f="${f}" data-v="${v}" class="${String(x[f]) === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   return `<div class="editor">
-    <div class="fgrid">
-      <div class="f full"><label>Titel</label><input class="inp big" ${k('title')} value="${esc(x.title)}" placeholder="z. B. Sektempfang"></div>
+    <div class="fld"><label class="lbl">Titel</label><input class="inp big" ${k('title')} value="${esc(x.title)}" placeholder="z. B. Sektempfang"></div>
 
-      <div class="f">
-        <label>Beginn</label>
-        <label class="chk"><input type="checkbox" ${k('fixed')} ${x.fixed ? 'checked' : ''}> Feste Uhrzeit</label>
-        <div class="inline">
-          <input type="time" class="inp" ${k('time')} value="${esc(x.time || hhmm(r.start))}" ${x.fixed ? '' : 'disabled'}>
-          ${x.fixed ? '' : `<span class="hint">ergibt sich: ${hhmm(r.start)}</span>`}
-        </div>
+    <div class="two">
+      <div class="fld"><label class="lbl">Wann?</label>
+        ${seg('fixed', [['true', 'Feste Uhrzeit'], ['false', x.parallel ? 'Mit dem Hauptpunkt' : 'Im Anschluss']])}
+        <div class="hbox">${x.fixed ? `<input type="time" class="inp" ${k('time')} value="${esc(x.time)}">` : `<span class="hint">beginnt um ${hhmm(r.start)}</span>`}</div>
       </div>
-
-      <div class="f">
-        <label>Dauer</label>
-        <label class="chk"><input type="checkbox" ${k('auto')} ${x.auto ? 'checked' : ''}> Bis zum nächsten Punkt</label>
-        <div class="inline">
-          <input type="number" min="0" step="5" class="inp" ${k('dur')} value="${x.auto ? r.dur : (x.dur ?? '')}" ${x.auto ? 'disabled' : ''} style="max-width:80px">
-          <span class="hint">Min.</span>
-          ${x.auto ? '' : `<span class="steps"><button data-act="step" data-id="${x.id}" data-d="-15">−15</button><button data-act="step" data-id="${x.id}" data-d="-5">−5</button><button data-act="step" data-id="${x.id}" data-d="5">+5</button><button data-act="step" data-id="${x.id}" data-d="15">+15</button></span>`}
-        </div>
-        <div class="inline"><span class="hint">Ende</span><input type="time" class="inp" ${k('end')} value="${hhmm(r.end)}" ${x.auto ? 'disabled' : ''} style="max-width:130px"></div>
+      <div class="fld"><label class="lbl">Wie lange?</label>
+        ${seg('auto', [['false', 'Minuten'], ['true', 'Bis zum nächsten Punkt']])}
+        <div class="hbox">${x.auto ? `<span class="hint">${fmtDur(r.dur)}, bis ${hhmm(r.end)}</span>` :
+          `<button class="rnd" data-act="step" data-id="${id}" data-d="-5">−</button><input type="number" min="0" step="5" class="inp" ${k('dur')} value="${x.dur ?? ''}"><button class="rnd" data-act="step" data-id="${id}" data-d="5">+</button><span class="hint">bis ${hhmm(r.end)}</span>`}</div>
       </div>
-
-      <div class="f"><label>Ort</label><input class="inp" ${k('location')} value="${esc(x.location)}" placeholder="z. B. Schlossgarten"></div>
-      <div class="f"><label>Verantwortlich</label><input class="inp" ${k('person')} value="${esc(x.person)}" placeholder="Wer kümmert sich?"></div>
-
-      <div class="f full inline" style="gap:22px">
-        <label class="chk"><input type="checkbox" ${k('parallel')} ${x.parallel ? 'checked' : ''}> Läuft parallel zum vorigen Punkt</label>
-        <label class="chk"><input type="checkbox" ${k('tentative')} ${x.tentative ? 'checked' : ''}> Noch vorläufig</label>
-      </div>
-
-      <div class="f full"><label>Details &amp; Ergänzungen</label><textarea class="inp" rows="3" ${k('details')} placeholder="Ablauf, Musik, Dienstleister, Besonderheiten …">${esc(x.details)}</textarea></div>
     </div>
 
-    <div class="section">
-      <h4>To-dos &amp; Material <small>${x.todos.filter(t => t.done).length}/${x.todos.length}</small></h4>
-      ${x.todos.map(t => `<div class="todo${t.done ? ' done' : ''}">
-        <label class="chk"><input type="checkbox" data-act="todo-done" data-id="${x.id}" data-t="${t.id}" ${t.done ? 'checked' : ''}></label>
-        <input class="inp" data-k="${x.id}:todo:${t.id}" data-todo="${t.id}" data-id="${x.id}" value="${esc(t.text)}">
-        <button class="x" data-act="todo-del" data-id="${x.id}" data-t="${t.id}" title="Entfernen">×</button>
-      </div>`).join('')}
-      <div class="todo"><span style="width:15px;text-align:center;color:var(--muted)">+</span><input class="inp" data-k="${x.id}:newtodo" data-newtodo="${x.id}" placeholder="Neuer Punkt, Enter zum Hinzufügen"></div>
+    <div class="fld"><label class="lbl">Farbe</label><div class="swatches">${COLORS.map(([c, n]) => `<button class="sw${x.color === c ? ' on' : ''}" data-c="${c}" data-act="color" data-id="${id}" data-v="${c}" title="${n}"></button>`).join('')}</div></div>
+
+    <div class="fld"><div class="chips">
+      <button class="chip${x.parallel ? ' on' : ''}" data-act="flip" data-id="${id}" data-f="parallel">Läuft nebenher</button>
+      <button class="chip${x.tentative ? ' on' : ''}" data-act="flip" data-id="${id}" data-f="tentative">Noch vorläufig</button>
+    </div></div>
+
+    <div class="two">
+      <div class="fld"><label class="lbl">Ort</label><input class="inp" ${k('location')} value="${esc(x.location)}" placeholder="optional"></div>
+      <div class="fld"><label class="lbl">Wer kümmert sich?</label><input class="inp" ${k('person')} value="${esc(x.person)}" placeholder="optional"></div>
     </div>
 
-    <div class="section">
-      <h4>Kommentare <small>${x.comments.length}</small></h4>
-      ${x.comments.map(c => `<div class="comment">
-        <div class="who">${esc(c.author || 'Anonym')}<span>${new Date(c.ts).toLocaleString('de-DE', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</span></div>
-        <button class="x" data-act="com-del" data-id="${x.id}" data-c="${c.id}" title="Kommentar löschen">×</button>
-        <div class="txt">${esc(c.text)}</div>
-      </div>`).join('')}
-      <div class="newcomment">
-        <div class="f"><label>Name</label><input class="inp" data-k="author" data-author value="${esc(state.author)}" placeholder="Dein Name"></div>
-        <div class="f"><label>Kommentar</label><textarea class="inp" data-k="${x.id}:newcom" data-newcom="${x.id}" placeholder="Anmerkung, Idee, Frage …"></textarea></div>
-        <button class="btn" data-act="com-add" data-id="${x.id}">Senden</button>
-      </div>
+    <div class="fld"><label class="lbl">Notizen</label><textarea class="inp" ${k('details')} placeholder="Ablauf, Ideen, Absprachen …">${esc(x.details)}</textarea></div>
+
+    <div class="fld"><label class="lbl">Aufgaben &amp; Material</label><div class="list">
+      ${x.todos.map(t => `<div class="item${t.done ? ' done' : ''}">
+        <input type="checkbox" class="cb" data-act="todo-done" data-id="${id}" data-t="${t.id}" ${t.done ? 'checked' : ''}>
+        <input class="inp" data-k="${id}:t:${t.id}" data-todo="${t.id}" data-id="${id}" value="${esc(t.text)}">
+        <button class="x" data-act="todo-del" data-id="${id}" data-t="${t.id}" title="Entfernen">×</button></div>`).join('')}
+      <div class="item"><span class="plus">+</span><input class="inp" data-k="${id}:t:new" data-newtodo="${id}" placeholder="Neue Aufgabe – Enter"></div>
+    </div></div>
+
+    <div class="fld"><label class="lbl">Kommentare</label>
+      ${x.comments.map(c => `<div class="comment"><div class="who">${esc(c.author || 'Anonym')}<span>${new Date(c.ts).toLocaleString('de-DE', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})}</span></div>
+        <button class="x" data-act="com-del" data-id="${id}" data-c="${c.id}" title="Löschen">×</button><div class="txt">${esc(c.text)}</div></div>`).join('')}
+      <div class="newc"><input class="inp" data-k="author" data-author value="${esc(state.author)}" placeholder="Dein Name">
+        <input class="inp" data-k="${id}:c:new" data-newcom="${id}" placeholder="Kommentar – Enter">
+        <button class="btn" data-act="com-add" data-id="${id}">Senden</button></div>
     </div>
 
     <div class="edfoot">
-      <button class="btn ghost" data-act="up" data-id="${x.id}" ${i === 0 ? 'disabled' : ''}>↑ Hoch</button>
-      <button class="btn ghost" data-act="down" data-id="${x.id}" ${i === state.items.length - 1 ? 'disabled' : ''}>↓ Runter</button>
-      <button class="btn ghost" data-act="dup" data-id="${x.id}">Duplizieren</button>
-      <button class="btn ghost" data-act="after" data-id="${x.id}">+ Danach einfügen</button>
+      <button class="btn icon" data-act="move" data-d="-1" data-id="${id}" ${i === 0 ? 'disabled' : ''} title="Nach oben">↑</button>
+      <button class="btn icon" data-act="move" data-d="1" data-id="${id}" ${i === state.items.length - 1 ? 'disabled' : ''} title="Nach unten">↓</button>
+      <button class="btn" data-act="dup" data-id="${id}">Duplizieren</button>
+      <button class="btn danger" data-act="del" data-id="${id}">Löschen</button>
       <span class="spacer"></span>
-      <button class="btn danger" data-act="del" data-id="${x.id}">Löschen</button>
-      <button class="btn primary" data-act="toggle" data-id="${x.id}">Fertig</button>
+      <button class="btn primary" data-act="toggle" data-id="${id}">Fertig</button>
     </div>
   </div>`;
 }
@@ -522,109 +447,116 @@ function editor(x, r, i){
 /* ---------- Aktionen ---------- */
 const find = id => state.items.find(x => x.id === id);
 const idx = id => state.items.findIndex(x => x.id === id);
-function newItem(o={}){ return Object.assign({id:uid(), title:'', fixed:false, time:'', dur:30, auto:false, parallel:false, tentative:false, location:'', person:'', details:'', todos:[], comments:[]}, o); }
-function openAndFocus(id){ openId = id; render(); const el = document.querySelector(`[data-k="${id}:title"]`); if (el){ el.focus(); el.closest('.row').scrollIntoView({behavior:'smooth', block:'center'}); } }
+function openAndFocus(id){
+  openId = id; render();
+  const el = document.querySelector(`[data-k="${id}:title"]`);
+  if (el){ el.focus({preventScroll:true}); el.closest('.row').scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+function armed(b, label, fn){
+  if (!b.classList.contains('armed')){ b.classList.add('armed'); const old = b.textContent; b.textContent = label; setTimeout(() => { if (b.isConnected){ b.classList.remove('armed'); b.textContent = old; } }, 3000); return; }
+  fn();
+}
 
-$('#addBtn').onclick = () => { const n = newItem(); commit(() => state.items.push(n)); openAndFocus(n.id); };
-$('#undoBtn').onclick = undo; $('#redoBtn').onclick = redo;
-$('#expandBtn').onclick = () => { expandAll = !expandAll; render(); };
-$('#printBtn').onclick = () => window.print();
+$('#addBtn').onclick = () => {
+  const ref = openId ? find(openId) : null;
+  const n = blank({color: ref ? ref.color : 'sage'});
+  commit(() => ref ? state.items.splice(idx(ref.id) + 1, 0, n) : state.items.push(n));
+  openAndFocus(n.id);
+};
+$('#undoBtn').onclick = undo;
+$('#statusBtn').onclick = () => { issuesOpen = !issuesOpen; render(); };
+$('#menuBtn').onclick = e => { e.stopPropagation(); $('#menu').hidden = !$('#menu').hidden; };
+document.addEventListener('click', e => { if (!e.target.closest('#menu')) $('#menu').hidden = true; });
 
 document.addEventListener('keydown', e => {
-  const mod = e.metaKey || e.ctrlKey;
-  if (mod && e.key.toLowerCase() === 'z' && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName) && !document.activeElement?.isContentEditable){
-    e.preventDefault(); e.shiftKey ? redo() : undo();
-  }
-  if (e.key === 'Escape' && openId){ openId = null; document.activeElement?.blur(); render(); }
+  const tag = document.activeElement?.tagName;
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !['INPUT', 'TEXTAREA'].includes(tag) && !document.activeElement?.isContentEditable){ e.preventDefault(); undo(); }
+  if (e.key === 'Escape'){ $('#menu').hidden = true; if (openId){ openId = null; document.activeElement?.blur(); render(); } }
 });
 
-// Kopf bearbeiten
 document.querySelectorAll('[data-meta]').forEach(el => {
   el.addEventListener('focus', () => { focusSnap = snap(); });
   el.addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); el.blur(); } });
   el.addEventListener('blur', () => { const v = el.textContent.trim(); if (v !== state.meta[el.dataset.meta]){ pushHistory(focusSnap); state.meta[el.dataset.meta] = v; save(); render(); } });
 });
 
-// Klicks
-tl.addEventListener('click', e => {
-  const b = e.target.closest('[data-act]'); if (!b) return;
+document.addEventListener('click', e => {
+  const jump = e.target.closest('[data-jump]');
+  if (jump){ issuesOpen = false; openId = jump.dataset.jump; render(); document.querySelector(`.row[data-id="${openId}"]`)?.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  const b = e.target.closest('[data-act]'); if (!b || b.type === 'checkbox') return;
   const id = b.dataset.id, x = find(id), a = b.dataset.act;
-  if (a === 'toggle'){ if (e.target.closest('input,textarea,button') && b.tagName !== 'BUTTON') return; openId = openId === id ? null : id; render(); return; }
-  if (a === 'step'){ commit(() => { x.dur = Math.max(0, (+x.dur || 0) + (+b.dataset.d)); }); return; }
-  if (a === 'up' || a === 'down'){ const i = idx(id), j = a === 'up' ? i - 1 : i + 1; if (j < 0 || j >= state.items.length) return; commit(() => { const [m] = state.items.splice(i, 1); state.items.splice(j, 0, m); }); return; }
-  if (a === 'dup'){ const c = JSON.parse(JSON.stringify(x)); c.id = uid(); c.title = x.title + ' (Kopie)'; c.fixed = false; c.comments = []; c.todos.forEach(t => t.id = uid()); commit(() => state.items.splice(idx(id) + 1, 0, c)); openAndFocus(c.id); return; }
-  if (a === 'after'){ const n = newItem({parallel:false}); commit(() => state.items.splice(idx(id) + 1, 0, n)); openAndFocus(n.id); return; }
-  if (a === 'fillgap'){ const n = newItem({dur:+b.dataset.gap}); commit(() => state.items.splice(idx(id), 0, n)); openAndFocus(n.id); return; }
-  if (a === 'del'){
-    if (!b.classList.contains('armed')){ b.classList.add('armed'); b.textContent = 'Wirklich löschen?'; setTimeout(() => { if (b.isConnected){ b.classList.remove('armed'); b.textContent = 'Löschen'; } }, 3000); return; }
-    const t = x.title || 'Programmpunkt'; commit(() => { state.items.splice(idx(id), 1); openId = null; }, {toast:`„${t}“ gelöscht`}); return;
+  switch (a){
+    case 'toggle': openId = openId === id ? null : id; render(); break;
+    case 'set': commit(() => {
+      const v = b.dataset.v === 'true';
+      if (b.dataset.f === 'fixed' && v && !x.time) x.time = hhmm(compute().res[id].start);
+      if (b.dataset.f === 'auto' && !v) x.dur = Math.max(0, compute().res[id].dur);
+      x[b.dataset.f] = v;
+    }); break;
+    case 'flip': commit(() => { x[b.dataset.f] = !x[b.dataset.f]; }); break;
+    case 'color': commit(() => { x.color = b.dataset.v; }); break;
+    case 'step': commit(() => { x.dur = Math.max(0, (+x.dur || 0) + +b.dataset.d); }); break;
+    case 'move': { const i = idx(id), j = i + +b.dataset.d; if (j < 0 || j >= state.items.length) return; commit(() => { const [m] = state.items.splice(i, 1); state.items.splice(j, 0, m); }); break; }
+    case 'dup': { const c = JSON.parse(JSON.stringify(x)); Object.assign(c, {id:uid(), title:x.title + ' (Kopie)', fixed:false, comments:[]}); c.todos.forEach(t => t.id = uid()); commit(() => state.items.splice(idx(id) + 1, 0, c)); openAndFocus(c.id); break; }
+    case 'del': armed(b, 'Wirklich löschen?', () => commit(() => { state.items.splice(idx(id), 1); openId = null; }, `„${T(x)}“ gelöscht`)); break;
+    case 'fillgap': { const n = blank({dur:+b.dataset.gap, color:x.color}); commit(() => state.items.splice(idx(id), 0, n)); openAndFocus(n.id); break; }
+    case 'todo-del': commit(() => { x.todos = x.todos.filter(t => t.id !== b.dataset.t); }); break;
+    case 'com-add': addComment(id); break;
+    case 'com-del': commit(() => { x.comments = x.comments.filter(c => c.id !== b.dataset.c); }, 'Kommentar gelöscht'); break;
+    case 'q-del': commit(() => { state.questions = state.questions.filter(q => q.id !== b.dataset.q); }, 'Frage gelöscht'); break;
   }
-  if (a === 'todo-del'){ commit(() => { x.todos = x.todos.filter(t => t.id !== b.dataset.t); }); return; }
-  if (a === 'com-del'){ commit(() => { x.comments = x.comments.filter(c => c.id !== b.dataset.c); }, {toast:'Kommentar gelöscht'}); return; }
-  if (a === 'com-add'){ addComment(id); return; }
 });
 function addComment(id){
-  const ta = document.querySelector(`[data-newcom="${id}"]`); const txt = ta?.value.trim(); if (!txt){ ta?.focus(); return; }
-  commit(() => find(id).comments.push({id:uid(), author:state.author, text:txt, ts:Date.now()}));
+  const el = document.querySelector(`[data-newcom="${id}"]`), t = el?.value.trim();
+  if (!t){ el?.focus(); return; }
+  commit(() => find(id).comments.push({id:uid(), author:state.author, text:t, ts:Date.now()}));
 }
 
-tl.addEventListener('focusin', e => { focusSnap = snap(); });
-// Live-Eingabe: Text sofort übernehmen, ohne neu zu zeichnen
-tl.addEventListener('input', e => {
+const TEXT = ['title', 'location', 'person', 'details'];
+document.addEventListener('focusin', () => { focusSnap = snap(); });
+document.addEventListener('input', e => {
   const el = e.target, x = find(el.dataset.id);
-  if (el.hasAttribute('data-author')){ state.author = el.value; save(); return; }
-  if (el.dataset.todo){ const t = x.todos.find(t => t.id === el.dataset.todo); if (t){ t.text = el.value; save(); } return; }
-  if (x && ['title','location','person','details'].includes(el.dataset.f)){ x[el.dataset.f] = el.value; save(); }
+  if (el.hasAttribute('data-author')) state.author = el.value;
+  else if (el.dataset.todo){ const t = x?.todos.find(t => t.id === el.dataset.todo); if (t) t.text = el.value; }
+  else if (el.dataset.qtext){ const q = state.questions.find(q => q.id === el.dataset.qtext); if (q) q.text = el.value; }
+  else if (x && TEXT.includes(el.dataset.f)) x[el.dataset.f] = el.value;
+  else return;
+  save();
 });
-// Änderung abgeschlossen: in Verlauf aufnehmen und neu rechnen
-tl.addEventListener('change', e => {
+document.addEventListener('change', e => {
   const el = e.target;
-  if (el.dataset.act === 'todo-done'){ const x = find(el.dataset.id); commit(() => { const t = x.todos.find(t => t.id === el.dataset.t); t.done = el.checked; }); return; }
-  if (el.hasAttribute('data-author') || el.dataset.newtodo || el.dataset.newcom) return;
+  if (el.dataset.act === 'todo-done'){ commit(() => { find(el.dataset.id).todos.find(t => t.id === el.dataset.t).done = el.checked; }); return; }
+  if (el.dataset.act === 'q-done'){ commit(() => { state.questions.find(q => q.id === el.dataset.q).done = el.checked; }); return; }
+  if (el.dataset.todo || el.dataset.qtext || TEXT.includes(el.dataset.f)){ pushHistory(focusSnap); focusSnap = snap(); render(); return; }
   const x = find(el.dataset.id); if (!x) return;
-  const f = el.dataset.f, before = focusSnap;
-  pushHistory(before);
-  if (f === 'fixed'){ x.fixed = el.checked; if (x.fixed && !x.time){ x.time = hhmm(compute().res[x.id].start); } }
-  else if (f === 'time'){ x.time = el.value; }
-  else if (f === 'auto'){ if (!el.checked){ x.dur = compute().res[x.id].dur; } x.auto = el.checked; }
-  else if (f === 'dur'){ x.dur = el.value === '' ? null : Math.max(0, Math.round(+el.value)); }
-  else if (f === 'end'){ const r = compute().res[x.id]; const e2 = resolve(el.value, r.start); if (e2 != null) x.dur = e2 - r.start; }
-  else if (f === 'parallel' || f === 'tentative'){ x[f] = el.checked; }
-  else if (!el.dataset.todo && !['title','location','person','details'].includes(f)) { past.pop(); return; }
+  if (el.dataset.f === 'time' && el.value){ pushHistory(focusSnap); x.time = el.value; }
+  else if (el.dataset.f === 'dur'){ pushHistory(focusSnap); x.dur = Math.max(0, Math.round(+el.value || 0)); }
+  else return;
   focusSnap = snap(); save(); render();
 });
-tl.addEventListener('keydown', e => {
-  const el = e.target;
-  if (el.dataset.newtodo && e.key === 'Enter'){ e.preventDefault(); const v = el.value.trim(); if (!v) return; commit(() => find(el.dataset.newtodo).todos.push({id:uid(), text:v, done:false})); const n = document.querySelector(`[data-newtodo="${el.dataset.newtodo}"]`); n?.focus(); }
-  if (el.dataset.newcom && e.key === 'Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); addComment(el.dataset.newcom); }
-  if (el.dataset.f === 'title' && e.key === 'Enter'){ e.preventDefault(); el.blur(); }
-});
-
-// Prüfliste: zum Punkt springen
-$('#checks').addEventListener('toggle', () => { $('#checks').dataset.touched = '1'; });
-$('#checks').addEventListener('click', e => {
-  const li = e.target.closest('[data-jump]'); if (!li) return;
-  openId = li.dataset.jump; render();
-  document.querySelector(`.row[data-id="${openId}"]`)?.scrollIntoView({behavior:'smooth', block:'center'});
+document.addEventListener('keydown', e => {
+  const el = e.target; if (e.key !== 'Enter') return;
+  if (el.dataset.newtodo){ e.preventDefault(); const v = el.value.trim(); if (v) commit(() => find(el.dataset.newtodo).todos.push({id:uid(), text:v, done:false})); }
+  else if (el.dataset.newcom){ e.preventDefault(); addComment(el.dataset.newcom); }
+  else if (el.hasAttribute('data-qnew')){ e.preventDefault(); const v = el.value.trim(); if (v) commit(() => state.questions.push({id:uid(), text:v, done:false})); }
+  else if (el.dataset.f === 'title' || el.dataset.todo || el.dataset.qtext){ e.preventDefault(); el.blur(); }
 });
 
 /* ---------- Ziehen & Ablegen ---------- */
 let dragId = null;
 tl.addEventListener('mousedown', e => { const g = e.target.closest('[data-grip]'); if (g) g.closest('.row').draggable = true; });
-tl.addEventListener('mouseup', e => { tl.querySelectorAll('.row[draggable="true"]').forEach(r => r.draggable = false); });
 tl.addEventListener('dragstart', e => { const row = e.target.closest('.row'); if (!row) return; dragId = row.dataset.id; row.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragId); });
-tl.addEventListener('dragend', e => { dragId = null; tl.querySelectorAll('.row').forEach(r => { r.classList.remove('dragging','drop-before','drop-after'); r.draggable = false; }); });
+tl.addEventListener('dragend', () => { dragId = null; tl.querySelectorAll('.row').forEach(r => { r.classList.remove('dragging', 'drop-before', 'drop-after'); r.draggable = false; }); });
 tl.addEventListener('dragover', e => {
-  if (!dragId) return; const row = e.target.closest('.row'); if (!row || row.dataset.id === dragId) return;
+  const row = e.target.closest('.row'); if (!dragId || !row || row.dataset.id === dragId) return;
   e.preventDefault(); const rc = row.getBoundingClientRect(), after = e.clientY > rc.top + rc.height / 2;
-  tl.querySelectorAll('.row').forEach(r => r.classList.remove('drop-before','drop-after'));
+  tl.querySelectorAll('.row').forEach(r => r.classList.remove('drop-before', 'drop-after'));
   row.classList.add(after ? 'drop-after' : 'drop-before');
 });
 tl.addEventListener('drop', e => {
-  if (!dragId) return; const row = e.target.closest('.row'); if (!row) return; e.preventDefault();
+  const row = e.target.closest('.row'); if (!dragId || !row || row.dataset.id === dragId) return; e.preventDefault();
   const after = row.classList.contains('drop-after'), target = row.dataset.id, moving = dragId;
-  if (target === moving) return;
-  commit(() => { const [m] = state.items.splice(idx(moving), 1); let j = idx(target); if (after) j++; state.items.splice(j, 0, m); });
+  commit(() => { const [m] = state.items.splice(idx(moving), 1); state.items.splice(idx(target) + (after ? 1 : 0), 0, m); });
 });
 
 /* ---------- Toast ---------- */
@@ -635,34 +567,37 @@ function toast(msg, withUndo){
 }
 $('#toastBtn').onclick = () => { undo(); $('#toast').classList.remove('show'); };
 
-/* ---------- Sichern, Laden, Kopieren, Zurücksetzen ---------- */
-$('#exportBtn').onclick = () => {
-  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'hochzeit-zeitplan-' + new Date().toISOString().slice(0,10) + '.json';
-  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-  toast('Datei gesichert');
-};
-$('#importBtn').onclick = () => $('#fileIn').click();
+/* ---------- Menü ---------- */
+$('#menu').addEventListener('click', e => {
+  const b = e.target.closest('[data-menu]'); if (!b) return;
+  const m = b.dataset.menu;
+  if (m === 'reset'){ e.stopPropagation(); armed(b, 'Sicher? Nochmal klicken', () => { $('#menu').hidden = true; commit(() => { state = fresh(); openId = null; }, 'Zurückgesetzt'); }); return; }
+  $('#menu').hidden = true;
+  if (m === 'export'){
+    const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'ablaufplan-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('Datei gesichert');
+  }
+  if (m === 'import') $('#fileIn').click();
+  if (m === 'print') window.print();
+  if (m === 'copy'){
+    const {res} = compute();
+    let md = `# ${state.meta.title}\n\n| Zeit | Punkt | Notizen |\n|---|---|---|\n`;
+    state.items.forEach(x => {
+      const r = res[x.id];
+      const bits = [x.location, x.person && 'Wer: ' + x.person, x.details.replace(/\n/g, ' '), x.todos.map(t => (t.done ? '☑ ' : '☐ ') + t.text).join(', '), x.tentative && '_vorläufig_'].filter(Boolean).join(' · ');
+      md += `| ${hhmm(r.start)}–${hhmm(r.end)} | ${x.parallel ? '↳ ' : ''}**${x.title}** | ${bits.replace(/\|/g, '/')} |\n`;
+    });
+    if (state.questions.length) md += `\n## Offene Fragen\n\n` + state.questions.map(q => `- [${q.done ? 'x' : ' '}] ${q.text}`).join('\n') + '\n';
+    navigator.clipboard.writeText(md).then(() => toast('Als Markdown kopiert'), () => toast('Kopieren nicht möglich'));
+  }
+});
 $('#fileIn').onchange = e => {
   const f = e.target.files[0]; if (!f) return;
-  f.text().then(t => { const d = JSON.parse(t); if (!Array.isArray(d.items)) throw 0; commit(() => { state = d; openId = null; }, {toast:'Zeitplan geladen'}); })
-    .catch(() => toast('Diese Datei ist kein gültiger Zeitplan')); e.target.value = '';
-};
-$('#mdBtn').onclick = () => {
-  const {res} = compute();
-  let md = `# ${state.meta.title}\n\n${state.meta.couple} · ${state.meta.date}\n\n| Zeit | Programmpunkt | Details |\n|---|---|---|\n`;
-  state.items.forEach(x => {
-    const r = res[x.id]; const bits = [x.location, x.person && 'Verantw.: ' + x.person, x.details.replace(/\n/g, ' '), x.todos.length && x.todos.map(t => (t.done ? '☑ ' : '☐ ') + t.text).join(', '), x.tentative && '_vorläufig_'].filter(Boolean).join(' · ');
-    md += `| ${hhmm(r.start)}–${hhmm(r.end)} | ${x.parallel ? '↳ ' : ''}**${x.title}** | ${bits.replace(/\|/g, '/')} |\n`;
-  });
-  navigator.clipboard.writeText(md).then(() => toast('Als Markdown kopiert'), () => toast('Kopieren nicht möglich'));
-};
-$('#resetBtn').onclick = e => {
-  const b = e.currentTarget;
-  if (!b.classList.contains('armed')){ b.classList.add('armed'); b.textContent = 'Sicher? Nochmal klicken'; setTimeout(() => { b.classList.remove('armed'); b.textContent = 'Auf Zettel-Stand zurücksetzen'; }, 3000); return; }
-  b.classList.remove('armed'); b.textContent = 'Auf Zettel-Stand zurücksetzen';
-  commit(() => { state = seed(); openId = null; }, {toast:'Auf Zettel-Stand zurückgesetzt'});
+  f.text().then(t => { const d = JSON.parse(t); if (!Array.isArray(d.items)) throw 0; commit(() => { state = normalize(d); openId = null; }, 'Datei geladen'); })
+    .catch(() => toast('Das ist keine gültige Ablaufplan-Datei')); e.target.value = '';
 };
 
 render();
