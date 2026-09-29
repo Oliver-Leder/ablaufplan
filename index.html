@@ -211,6 +211,8 @@ function blank(o = {}){
   if (o.until == null && o.auto != null) x.until = o.auto ? 'next' : 'min';
   delete x.auto;
   if (!x.parallel && x.until === 'end') x.until = 'min';
+  // fehlendes Kennzeichen „nach Mitternacht“ aus der Uhrzeit ableiten (vor 05:00 = Folgetag)
+  if (typeof x.nextDay !== 'boolean'){ const tm = /^(\d{1,2}):(\d{2})$/.exec(x.time || ''); x.nextDay = !!tm && +tm[1] * 60 + +tm[2] < 300; }
   return x;
 }
 function normalize(s){
@@ -299,8 +301,10 @@ function undo(){ if (!past.length) return; state = JSON.parse(past.pop()); if (o
 /* ---------- Zeitrechnung ---------- */
 const toMin = hm => { const m = /^(\d{1,2}):(\d{2})$/.exec(hm || ''); return m ? +m[1] * 60 + +m[2] : null; };
 // Uhrzeiten vor Tagesbeginn (erster fester Punkt) zählen als nach Mitternacht
-let dayStart = 0;
-function resolve(hm){ const m = toMin(hm); return m == null ? null : m < dayStart ? m + 1440 : m; }
+// Feste Uhrzeit + Kennzeichen „nach Mitternacht“. Neu eingegebene Zeiten vor 05:00 gelten zunächst als Folgetag.
+const NIGHT = 5 * 60;
+const abs = x => { const m = toMin(x.time); return m == null ? null : m + (x.nextDay ? 1440 : 0); };
+function setTime(x, hm){ x.time = hm; x.nextDay = toMin(hm) < NIGHT; }
 const pad = n => String(n).padStart(2, '0');
 const hhmm = m => m == null ? '–' : (d => pad(Math.floor(d / 60)) + ':' + pad(d % 60))(((m % 1440) + 1440) % 1440);
 function fmtDur(d){ if (d == null) return '–'; if (d <= 0) return '0 Min.'; const h = Math.floor(d / 60), m = d % 60; return [h && h + ' Std.', m && m + ' Min.'].filter(Boolean).join(' '); }
@@ -311,20 +315,19 @@ function compute(){
   const add = (level, id, text) => issues.push({level, id, text});
   const mainIdx = items.map((x, i) => x.parallel ? -1 : i).filter(i => i >= 0);
   const firstMain = items.find(x => !x.parallel);
-  dayStart = firstMain && firstMain.fixed && toMin(firstMain.time) != null ? toMin(firstMain.time) : 0;
   let prevEnd = null, prev = null;
   items.forEach((x, i) => {
     if (x.parallel) return;
     const r = res[x.id] = {gap:0};
     if (x.fixed && toMin(x.time) != null){
-      r.start = resolve(x.time);
+      r.start = abs(x);
       if (prevEnd != null){ r.gap = r.start - prevEnd; if (r.gap < 0) add('err', x.id, `„${T(x)}“ beginnt ${fmtDur(-r.gap)} bevor „${T(prev)}“ endet`); }
     } else if (prevEnd == null){ r.start = 8 * 60; add('err', x.id, 'Der erste Punkt braucht eine feste Uhrzeit'); }
     else r.start = prevEnd;
     let dur = +x.dur || 0;
     if (x.until === 'next'){
       const nx = items[mainIdx.find(j => j > i)];
-      if (nx && nx.fixed && toMin(nx.time) != null){ dur = resolve(nx.time) - r.start; r.to = T(nx); }
+      if (nx && nx.fixed && toMin(nx.time) != null){ dur = abs(nx) - r.start; r.to = T(nx); }
       else { dur = 0; add('warn', x.id, `„${T(x)}“ läuft bis zum nächsten Punkt – der hat aber keine feste Uhrzeit`); }
     }
     if (dur < 0){ add('err', x.id, `„${T(x)}“ endet, bevor es beginnt`); dur = 0; }
@@ -336,7 +339,7 @@ function compute(){
     if (!x.parallel){ parent = x; return; }
     const r = res[x.id] = {gap:0};
     if (!parent){ r.start = 8 * 60; add('err', x.id, `„${T(x)}“ läuft nebenher, aber es gibt davor keinen Hauptpunkt`); }
-    else { r.parentId = parent.id; r.start = x.fixed && toMin(x.time) != null ? resolve(x.time) : res[parent.id].start; }
+    else { r.parentId = parent.id; r.start = x.fixed && toMin(x.time) != null ? abs(x) : res[parent.id].start; }
     let dur = +x.dur || 0;
     if (x.until === 'next'){ const nx = items.slice(i + 1).find(y => !y.parallel); dur = nx ? res[nx.id].start - r.start : 0; }
     if (x.until === 'end') dur = (lastEnd ?? r.start) - r.start;
@@ -472,9 +475,9 @@ function renderDrawer({res}){
       <div class="fld"><label class="lbl">Beginn</label>
         ${x.parallel ? `<div class="row">zusammen mit
             <select class="inp" style="width:auto;flex:1" data-f="anchor" data-id="${id}">${mains.map(m => `<option value="${m.id}" ${res[x.id].parentId === m.id ? 'selected' : ''}>${hhmm(res[m.id].start)} ${esc(T(m))}</option>`).join('')}</select></div>
-            <div class="row"><label class="chk"><input type="checkbox" class="cb" data-f="fixed" data-id="${id}" ${x.fixed ? 'checked' : ''}> eigene Uhrzeit</label>${x.fixed ? `<input type="time" class="inp" ${k('time')} value="${esc(x.time)}">` : ''}</div>`
+            <div class="row"><label class="chk"><input type="checkbox" class="cb" data-f="fixed" data-id="${id}" ${x.fixed ? 'checked' : ''}> eigene Uhrzeit</label>${x.fixed ? `<input type="time" class="inp" ${k('time')} value="${esc(x.time)}"><label class="chk" title="Uhrzeit liegt nach Mitternacht (Folgetag)"><input type="checkbox" class="cb" data-f="nextDay" data-id="${id}" ${x.nextDay ? 'checked' : ''}> nach Mitternacht</label>` : ''}</div>`
           : `${seg('fixed', [['true', 'Feste Uhrzeit'], ['false', 'Im Anschluss']])}
-            <div class="row">${x.fixed ? `<input type="time" class="inp" ${k('time')} value="${esc(x.time)}">` : `beginnt um ${hhmm(r.start)}`}</div>`}
+            <div class="row">${x.fixed ? `<input type="time" class="inp" ${k('time')} value="${esc(x.time)}"><label class="chk" title="Uhrzeit liegt nach Mitternacht (Folgetag)"><input type="checkbox" class="cb" data-f="nextDay" data-id="${id}" ${x.nextDay ? 'checked' : ''}> nach Mitternacht</label>` : `beginnt um ${hhmm(r.start)}`}</div>`}
       </div>
 
       <div class="fld"><label class="lbl">Dauer</label>
@@ -518,6 +521,26 @@ const find = id => state.items.find(x => x.id === id);
 const idx = id => state.items.findIndex(x => x.id === id);
 // Hauptpunkt + direkt folgende Parallelpunkte
 function groupRange(i){ let e = i + 1; while (e < state.items.length && state.items[e].parallel) e++; return [i, e]; }
+// Punkt mit fester Uhrzeit an die zeitlich passende Stelle verschieben (Hauptpunkte samt ihrer Parallelpunkte)
+function placeByTime(x){
+  if (!x.fixed || toMin(x.time) == null) return;
+  const t = abs(x);
+  if (x.parallel){
+    const [m] = state.items.splice(idx(x.id), 1);
+    const {res} = compute();
+    const mains = state.items.filter(y => !y.parallel);
+    if (!mains.length){ state.items.push(m); return; }
+    let parent = mains[0];
+    mains.forEach(y => { if (res[y.id].start <= t) parent = y; });
+    state.items.splice(groupRange(idx(parent.id))[1], 0, m);
+    return;
+  }
+  const [s, e] = groupRange(idx(x.id));
+  const grp = state.items.splice(s, e - s);
+  const {res} = compute();
+  const next = state.items.find(y => !y.parallel && res[y.id].start > t);
+  state.items.splice(next ? idx(next.id) : state.items.length, 0, ...grp);
+}
 function openItem(id, focusTitle){
   openId = id; render();
   document.querySelector(`[data-open="${id}"]`)?.scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -568,7 +591,7 @@ document.addEventListener('click', e => {
     case 'set': commit(() => {
       const f = b.dataset.f, raw = b.dataset.v, v = raw === 'true' ? true : raw === 'false' ? false : raw;
       const r = compute().res[id];
-      if (f === 'fixed' && v && !x.time) x.time = hhmm(r.start);
+      if (f === 'fixed' && v && !x.time){ x.time = hhmm(r.start); x.nextDay = r.start >= 1440; }
       if (f === 'until' && v === 'min') x.dur = Math.max(0, r.dur);
       if (f === 'parallel'){
         const i = idx(id);
@@ -577,13 +600,14 @@ document.addEventListener('click', e => {
           x.fixed = false;
         } else {
           if (x.until === 'end') x.until = 'min';
-          x.dur = x.until === 'min' ? Math.max(5, r.dur) : 30; x.until = 'min'; x.fixed = true; x.time = hhmm(r.start);
+          x.dur = x.until === 'min' ? Math.max(5, r.dur) : 30; x.until = 'min'; x.fixed = true; x.time = hhmm(r.start); x.nextDay = r.start >= 1440;
           const [m] = state.items.splice(i, 1);  // hinter die Gruppe verschieben
           let j = i; while (j < state.items.length && state.items[j].parallel) j++;
           state.items.splice(j, 0, m); x[f] = v; return;
         }
       }
       x[f] = v;
+      if (f === 'fixed' && v) placeByTime(x);
     }); break;
     case 'color': commit(() => { x.color = b.dataset.v; }); break;
     case 'step': commit(() => { x.dur = Math.max(0, (+x.dur || 0) + +b.dataset.d); }); break;
@@ -632,7 +656,9 @@ document.addEventListener('change', e => {
   const f = el.dataset.f;
   if (TEXT.includes(f)){ dirty = null; pushHistory(focusSnap); focusSnap = snap(); save(); render(); return; }
   if (f === 'tentative') return commit(() => { x.tentative = el.checked; });
-  if (f === 'fixed') return commit(() => { x.fixed = el.checked; if (x.fixed && !x.time) x.time = hhmm(compute().res[x.id].start); });
+  if (f === 'fixed') return commit(() => { const st = compute().res[x.id].start; x.fixed = el.checked; if (x.fixed && !x.time){ x.time = hhmm(st); x.nextDay = st >= 1440; } placeByTime(x); });
+  if (f === 'nextDay') return commit(() => { x.nextDay = el.checked; placeByTime(x); });
+  if (f === 'time') return el.value ? commit(() => { setTime(x, el.value); placeByTime(x); }) : undefined;
   if (f === 'anchor') return commit(() => {
     const [m] = state.items.splice(idx(x.id), 1);
     const [, e2] = groupRange(idx(el.value)); state.items.splice(e2, 0, m);
